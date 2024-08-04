@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "psdm"
+version = "0.1.0"
+dependencies = []
+requires-python = ">=3.8"
+authors = [
+  {name = "Jahn16", email = "jpdeoliveiraferreira@gmail.com"},
+]
+description = "A simple Python dependency manager"
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["packaging", "dependency", "workflow"]
+classifiers = [
+  "Topic :: Software Development :: Build Tools",
+  "Programming Language :: Python"
+]
+
+[project.scripts]
+psdm = "psdm.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/psdm"]
