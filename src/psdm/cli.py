@@ -1,2 +1,6 @@
+"""main."""
+
+
 def main() -> None:
-    print("Hello world!")
+    """Hello world."""
+    return
