@@ -24,3 +24,13 @@ psdm = "psdm.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/psdm"]
+
+[tool.ruff]
+preview = true
+line-length = 79
+
+[tool.ruff.lint]
+select = ["ALL"]
+
+[tool.mypy]
+strict = true
