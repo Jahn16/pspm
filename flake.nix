@@ -18,9 +18,9 @@
         pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
           src = ./.;
           hooks = {
-            # ruff.enable = true;
-            black.enable = true;
-            # ruff-format.enable = true;
+            mypy.enable = true;
+            ruff.enable = true;
+            ruff-format.enable = true;
           };
         };
       });
@@ -29,7 +29,8 @@
           venvDir = ".venv";
           packages = with pkgs; [
             python312
-            pre-commit
+            ruff
+            mypy
           ] ++
           (with pkgs.python312Packages; [
             pip

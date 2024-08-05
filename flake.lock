@@ -91,11 +91,11 @@
         "nixpkgs-stable": "nixpkgs-stable"
       },
       "locked": {
-        "lastModified": 1722826726,
-        "narHash": "sha256-YJINMAih/G6YkclB6o5fAOxsLsf6vikHAZg6NJ3TQL8=",
+        "lastModified": 1722857573,
+        "narHash": "sha256-3Zx53oz/MSIyevuWO/SumxABkrIvojnB7g9cimxkhiE=",
         "owner": "Jahn16",
         "repo": "git-hooks.nix",
-        "rev": "8af8d26ef1606c143b11dffe869a311b1a1aaa9f",
+        "rev": "54ac86058e30d476ae0ff4c428d40a8c3eb2581e",
         "type": "github"
       },
       "original": {
