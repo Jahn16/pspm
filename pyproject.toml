@@ -5,7 +5,9 @@ build-backend = "hatchling.build"
 [project]
 name = "pspm"
 version = "0.1.0"
-dependencies = []
+dependencies = [
+    "typer"
+]
 requires-python = ">=3.8"
 authors = [
   {name = "Jahn16", email = "jpdeoliveiraferreira@gmail.com"},
@@ -20,7 +22,7 @@ classifiers = [
 ]
 
 [project.scripts]
-psdm = "psdm.cli:main"
+psdm = "psdm.cli:app"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/psdm"]
