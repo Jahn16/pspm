@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.*.tar.gz";
-    pre-commit-hooks.url = "github:Jahn16/git-hooks.nix";
+    pre-commit-hooks.url = "github:cachix/git-hooks.nix";
   };
   outputs = { self, nixpkgs, ... }@inputs:
     let
@@ -26,17 +26,21 @@
       });
       devShells = forEachSupportedSystem ({ pkgs, system }: {
         default = pkgs.mkShell {
-          venvDir = ".venv";
           packages = with pkgs; [
             python312
-            ruff
-            mypy
           ] ++
           (with pkgs.python312Packages; [
             pip
-            venvShellHook
+            virtualenvwrapper
           ]);
-          inherit (self.checks.${system}.pre-commit-check) shellHook;
+          shellHook = self.checks.${system}.pre-commit-check.shellHook + ''
+            VENV=.venv
+            if test ! -d $VENV; then
+              virtualenv $VENV
+            fi
+            source $VENV/bin/activate
+            export PYTHONPATH=`pwd`/$VENV/${pkgs.python312.sitePackages}:$PYTHONPATH
+          '';
           buildInputs = self.checks.${system}.pre-commit-check.enabledPackages;
         };
       });

@@ -91,15 +91,15 @@
         "nixpkgs-stable": "nixpkgs-stable"
       },
       "locked": {
-        "lastModified": 1722857573,
+        "lastModified": 1722857853,
         "narHash": "sha256-3Zx53oz/MSIyevuWO/SumxABkrIvojnB7g9cimxkhiE=",
-        "owner": "Jahn16",
+        "owner": "cachix",
         "repo": "git-hooks.nix",
-        "rev": "54ac86058e30d476ae0ff4c428d40a8c3eb2581e",
+        "rev": "06939f6b7ec4d4f465bf3132a05367cccbbf64da",
         "type": "github"
       },
       "original": {
-        "owner": "Jahn16",
+        "owner": "cachix",
         "repo": "git-hooks.nix",
         "type": "github"
       }
