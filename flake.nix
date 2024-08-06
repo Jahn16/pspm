@@ -14,16 +14,23 @@
       });
     in
     {
-      checks = forEachSupportedSystem ({ system, ... }: {
-        pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
-          src = ./.;
-          hooks = {
-            mypy.enable = true;
-            ruff.enable = true;
-            ruff-format.enable = true;
-          };
-        };
-      });
+      checks = forEachSupportedSystem
+        ({ pkgs, system, ... }: {
+          pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run
+            {
+              src = ./.;
+              hooks = {
+                mypy = {
+                  enable = true;
+                  extraPackages = with pkgs.python312Packages; [
+                    types-toml
+                  ];
+                };
+                ruff.enable = true;
+                ruff-format.enable = true;
+              };
+            };
+        });
       devShells = forEachSupportedSystem ({ pkgs, system }: {
         default = pkgs.mkShell {
           packages = with pkgs; [
