@@ -6,7 +6,8 @@ build-backend = "hatchling.build"
 name = "pspm"
 version = "0.1.0"
 dependencies = [
-    "typer"
+    "typer",
+    "toml",
 ]
 requires-python = ">=3.8"
 authors = [
