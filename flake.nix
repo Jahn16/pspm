@@ -22,6 +22,7 @@
               hooks = {
                 mypy = {
                   enable = true;
+                  excludes = [ "tests" ];
                   extraPackages = with pkgs.python312Packages; [
                     types-toml
                   ];
