@@ -4,7 +4,7 @@ from typing import Any
 
 import pytest
 from pspm.entities.toml import BaseToml
-from pspm.services.pyproject import Pyproject
+from pspm.entities.pyproject import Pyproject
 
 
 class TestToml(BaseToml):
@@ -27,33 +27,40 @@ class TestToml(BaseToml):
 
 
 @pytest.fixture()
-def pyproject() -> Pyproject:
-    toml_parser = TestToml("foobar")
+def toml_parser() -> BaseToml:
+    return TestToml("foobar")
+
+
+@pytest.fixture()
+def pyproject(toml_parser: BaseToml) -> Pyproject:
     return Pyproject(toml_parser)
 
 
-def test_add_dependency(pyproject: Pyproject) -> None:
+def test_add_dependency(pyproject: Pyproject, toml_parser: BaseToml) -> None:
     package = "bla"
-    data = pyproject._parser.load()
+    data = toml_parser.load()
     expected_dependencies = data["project"]["dependencies"] + [package]
     pyproject.add_dependency(package)
-    result = pyproject._parser.load()
+    result = toml_parser.load()
     assert result["project"]["dependencies"] == expected_dependencies
 
 
-def test_add_dependency_with_group(pyproject: Pyproject) -> None:
+def test_add_dependency_with_group(
+    pyproject: Pyproject,
+    toml_parser: BaseToml,
+) -> None:
     package = "bla"
     group = "dev"
-    data = pyproject._parser.load()
+    data = toml_parser.load()
     expected_dependencies = data["project"].get(
         "optional-dependencies",
         {},
     ).get(group, []) + [
         package,
     ]
-    pyproject.add_dependency(package, group)
-    result = pyproject._parser.load()
+    pyproject.add_group_dependency(package, group)
+    result = toml_parser.load()
     assert (
-        result["project"].get("optional-dependencies", {}).get(group, [])
+        result["project"].get("optional-dependencies").get(group, [])
         == expected_dependencies
     )
