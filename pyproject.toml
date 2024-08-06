@@ -23,10 +23,10 @@ classifiers = [
 ]
 
 [project.scripts]
-psdm = "psdm.cli:app"
+spm = "pspm.cli:app"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/psdm"]
+packages = ["src/pspm"]
 
 [tool.ruff]
 preview = true
