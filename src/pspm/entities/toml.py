@@ -6,7 +6,8 @@ import abc
 from pathlib import Path
 from typing import Any
 
-import toml
+import tomli
+import tomli_w
 
 
 class BaseToml(abc.ABC):
@@ -44,12 +45,13 @@ class Toml(BaseToml):
 
         :return: A dictionary containing parsed TOML
         """
-        return toml.load(self.path)
+        with Path(self.path).open("rb") as f:
+            return tomli.load(f)
 
     def dump(self, data: dict[str, Any]) -> None:
         """Write a dictionary to a file containing TOML-formatted data.
 
         :param data: TOML data
         """
-        with Path(self.path).open("w", encoding="utf-8") as f:
-            toml.dump(data, f)
+        with Path(self.path).open("wb") as f:
+            tomli_w.dump(data, f)
