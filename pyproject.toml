@@ -1,5 +1,7 @@
 [build-system]
-requires = ["hatchling"]
+requires = [
+    "hatchling",
+]
 build-backend = "hatchling.build"
 
 [project]
@@ -12,42 +14,57 @@ dependencies = [
 ]
 requires-python = ">=3.8"
 authors = [
-  {name = "Jahn16", email = "jpdeoliveiraferreira@gmail.com"},
+    { name = "Jahn16", email = "jpdeoliveiraferreira@gmail.com" },
 ]
 description = "A simple Python dependency manager"
 readme = "README.md"
-license = {file = "LICENSE"}
-keywords = ["packaging", "dependency", "workflow"]
-classifiers = [
-  "Topic :: Software Development :: Build Tools",
-  "Programming Language :: Python"
+keywords = [
+    "packaging",
+    "dependency",
+    "workflow",
 ]
+classifiers = [
+    "Topic :: Software Development :: Build Tools",
+    "Programming Language :: Python",
+]
+
+[project.license]
+file = "LICENSE"
 
 [project.scripts]
 spm = "pspm.cli:app"
 
 [project.optional-dependencies]
 test = [
-  "pytest",
+    "pytest",
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/pspm"]
+packages = [
+    "src/pspm",
+]
 
 [tool.ruff]
 preview = true
 line-length = 79
 
 [tool.ruff.lint]
-select = ["ALL"]
+select = [
+    "ALL",
+]
 ignore = [
     "CPY",
     "COM812",
 ]
-extend-safe-fixes = ["FA102"]
-exclude = ["tests/*"]
-
+extend-safe-fixes = [
+    "FA102",
+]
+exclude = [
+    "tests/*",
+]
 
 [tool.mypy]
 strict = true
-exclude = ["tests"]
+exclude = [
+    "tests",
+]
