@@ -35,6 +35,7 @@ line-length = 79
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = ["CPY"]
+extend-safe-fixes = ["FA102"]
 
 [tool.mypy]
 strict = true
