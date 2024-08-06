@@ -39,8 +39,14 @@ line-length = 79
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["CPY"]
+ignore = [
+    "CPY",
+    "COM812",
+]
 extend-safe-fixes = ["FA102"]
+exclude = ["tests/*"]
+
 
 [tool.mypy]
 strict = true
+exclude = ["tests"]
