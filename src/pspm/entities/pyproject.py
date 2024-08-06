@@ -37,7 +37,7 @@ class Pyproject:
         """
         data = self._parser.load()
         optional_dependencies = data["project"].get(
-            "optional_dependencies",
+            "optional-dependencies",
             {},
         )
         dependencies = optional_dependencies.get(group, [])
