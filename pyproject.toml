@@ -25,6 +25,11 @@ classifiers = [
 [project.scripts]
 spm = "pspm.cli:app"
 
+[project.optional-dependencies]
+test = [
+  "pytest",
+]
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/pspm"]
 
