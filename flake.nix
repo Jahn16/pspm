@@ -26,7 +26,10 @@
                     types-toml
                   ];
                 };
-                ruff.enable = true;
+                ruff = {
+                  enable = true;
+                  excludes = [ "tests" ];
+                };
                 ruff-format.enable = true;
               };
             };
