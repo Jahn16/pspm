@@ -1,6 +1,11 @@
 """main."""
 
+from typing import Annotated
+
 import typer
+from rich import print
+
+from pspm.services.dependencies import add_dependency
 
 app = typer.Typer()
 
@@ -11,6 +16,9 @@ def callback() -> None:
 
 
 @app.command()
-def add(package: str) -> None:
+def add(
+    package: str, group: Annotated[str, typer.Option("--group", "-g")] = ""
+) -> None:
     """Add package to pyproject, install it and lock version."""
-    typer.echo(f"Adding package {package}")
+    print(f"Adding package {package}")
+    add_dependency(package, group or None)
