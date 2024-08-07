@@ -5,6 +5,7 @@ dependencies = [
     "typer",
     "tomli",
     "tomli-w",
+    "uv",
 ]
 requires-python = ">=3.8"
 authors = [
@@ -58,7 +59,7 @@ select = [
 ignore = [
     "CPY",
     "COM812",
-    "S404" # suspicious-subprocess-import
+    "S404",
 ]
 extend-safe-fixes = [
     "FA102",
