@@ -1,12 +1,6 @@
-[build-system]
-requires = [
-    "hatchling",
-]
-build-backend = "hatchling.build"
-
 [project]
 name = "pspm"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
     "typer",
     "tomli",
@@ -16,7 +10,7 @@ requires-python = ">=3.8"
 authors = [
     { name = "Jahn16", email = "jpdeoliveiraferreira@gmail.com" },
 ]
-description = "A simple Python dependency manager"
+description = "A simple Python package manager"
 readme = "README.md"
 keywords = [
     "packaging",
@@ -38,6 +32,12 @@ spm = "pspm.cli:app"
 dev = [
     "pytest",
 ]
+
+[build-system]
+requires = [
+    "hatchling",
+]
+build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = [
