@@ -33,6 +33,9 @@ dev = [
     "pytest",
 ]
 
+[project.urls]
+Homepage = "https://github.com/Jahn16/pspm"
+
 [build-system]
 requires = [
     "hatchling",
