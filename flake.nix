@@ -39,6 +39,7 @@
         default = pkgs.mkShell {
           packages = with pkgs; [
             python312
+            uv
           ] ++
           (with pkgs.python312Packages; [
             pip
