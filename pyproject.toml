@@ -55,6 +55,7 @@ select = [
 ignore = [
     "CPY",
     "COM812",
+    "S404" # suspicious-subprocess-import
 ]
 extend-safe-fixes = [
     "FA102",
