@@ -8,14 +8,25 @@ from rich import print
 
 from pspm.entities.installer import BaseInstaller, UVInstaller
 from pspm.entities.pyproject import Pyproject
+from pspm.entities.resolver import BaseResolver, UVResolver
 from pspm.entities.toml import Toml
 from pspm.errors.dependencies import InstallError
 
 
-def _get_pyproject() -> Pyproject:
+def _get_pyproject_path() -> str:
     path = Path(Path.cwd()) / "pyproject.toml"
+    return str(path)
+
+
+def _get_pyproject() -> Pyproject:
+    path = _get_pyproject_path()
     parser = Toml(str(path))
     return Pyproject(parser)
+
+
+def _get_resolver() -> BaseResolver:
+    path = _get_pyproject_path()
+    return UVResolver(path)
 
 
 def _get_installer() -> BaseInstaller:
@@ -40,3 +51,6 @@ def add_dependency(package: str, group: str | None = None) -> None:
         pyproject.add_dependency(package)
     else:
         pyproject.add_group_dependency(package, group)
+    resolver = _get_resolver()
+    output_file = f"requirements{'-' + group if group else ''}.lock"
+    resolver.compile(output_file, group)
