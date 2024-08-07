@@ -35,7 +35,7 @@ file = "LICENSE"
 spm = "pspm.cli:app"
 
 [project.optional-dependencies]
-test = [
+dev = [
     "pytest",
 ]
 
