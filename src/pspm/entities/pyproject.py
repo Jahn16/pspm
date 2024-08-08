@@ -55,6 +55,8 @@ class Pyproject(BasePyproject):
         """
         data = self._parser.load()
         dependencies: list[str] = data["project"].get("dependencies", [])
+        if package in dependencies:
+            return
         dependencies.append(package)
         data["project"]["dependencies"] = dependencies
         self._parser.dump(data)
@@ -72,6 +74,8 @@ class Pyproject(BasePyproject):
             {},
         )
         dependencies = optional_dependencies.get(group, [])
+        if package in dependencies:
+            return
         dependencies.append(package)
         optional_dependencies[group] = dependencies
         data["project"]["optional-dependencies"] = optional_dependencies
