@@ -68,6 +68,12 @@ exclude = [
     "tests/*",
 ]
 
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+docstring-code-format = false
+
 [tool.mypy]
 strict = true
 exclude = [
