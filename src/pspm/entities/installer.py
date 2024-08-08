@@ -10,13 +10,14 @@ from pspm.errors.dependencies import InstallError
 
 
 class BaseInstaller(abc.ABC):
-    """Base class for handling packages."""
+    """Package installer."""
 
     @abc.abstractmethod
     def install(self, package: str) -> None:
         """Install package.
 
-        :param package: Package to install
+        Args:
+            package: Package to install
         """
         raise NotImplementedError
 
@@ -24,13 +25,14 @@ class BaseInstaller(abc.ABC):
     def uninstall(self, package: str) -> None:
         """Uninstall package.
 
-        :param package: Package to uninstall
+        Args:
+            package: Package to uninstall
         """
         raise NotImplementedError
 
 
 class UVInstaller(BaseInstaller):
-    """Class for installing packages with UV."""
+    """Install packages with UV."""
 
     def __init__(self) -> None:
         """Initialize UV Installer."""
@@ -39,7 +41,8 @@ class UVInstaller(BaseInstaller):
     def install(self, package: str) -> None:
         """Install package.
 
-        :param package: Package to install
+        Args:
+            package: Package to install
         """
         retcode = subprocess.call([self._uv_path, "pip", "install", package])  # noqa: S603
         if retcode != 0:
@@ -48,6 +51,7 @@ class UVInstaller(BaseInstaller):
     def uninstall(self, package: str) -> None:
         """Uninstall package.
 
-        :param package: Package to uninstall
+        Args:
+            package: Package to uninstall
         """
         raise NotImplementedError

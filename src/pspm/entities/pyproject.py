@@ -14,14 +14,16 @@ class Pyproject:
     def __init__(self, toml_parser: BaseToml) -> None:
         """Init Pyproject.
 
-        :param toml_parser: Parser to be used for parsing TOML
+        Args:
+            toml_parser: Parser to be used for parsing TOML
         """
         self._parser = toml_parser
 
     def add_dependency(self, package: str) -> None:
         """Add dependency to project.
 
-        :param package: Package to download
+        Args:
+            package: Package to download
         """
         data = self._parser.load()
         dependencies: list[str] = data["project"].get("dependencies", [])
@@ -32,8 +34,9 @@ class Pyproject:
     def add_group_dependency(self, package: str, group: str) -> None:
         """Add optional-dependency with group to project.
 
-        :param package: Package to install
-        :param group: Group that package will be inserted
+        Args:
+            package: Package to install
+            group: Group that package will be inserted
         """
         data = self._parser.load()
         optional_dependencies = data["project"].get(

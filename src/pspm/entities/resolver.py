@@ -10,7 +10,11 @@ import uv
 
 
 class BaseResolver(abc.ABC):
-    """Base class for resolving dependencies."""
+    """Base class for resolving dependencies.
+
+    Attributes:
+        pyproject_path: Path to pyproject.
+    """
 
     def __init__(self, pyproject_path: str) -> None:
         """Initialize BaseResolver."""
@@ -20,8 +24,9 @@ class BaseResolver(abc.ABC):
     def compile(self, output_file: str, group: str | None = None) -> None:
         """Compiles requirements into a lock file.
 
-        :param output_file: File to write output
-        :param group: Group to include dependencies from
+        Args:
+            output_file: File to write output
+            group: Group to include dependencies from
         """
         raise NotImplementedError
 
@@ -37,8 +42,9 @@ class UVResolver(BaseResolver):
     def compile(self, output_file: str, group: str | None = None) -> None:
         """Compiles requirements into a lock file.
 
-        :param output_file: File to write output
-        :param group: Group to include dependencies from
+        Args:
+            output_file: File to write output
+            group: Group to include dependencies from
         """
         extra_arguments = ["--extra", group] if group else []
         subprocess.call([  # noqa: S603

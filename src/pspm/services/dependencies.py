@@ -36,8 +36,9 @@ def _get_installer() -> BaseInstaller:
 def add_dependency(package: str, group: str | None = None) -> None:
     """Add dependency to pyproject.
 
-    :param package: Package to install
-    :param group: Group to insert package
+    Args:
+        package: Package to install
+        group: Group to insert package
     """
     installer = _get_installer()
     try:
