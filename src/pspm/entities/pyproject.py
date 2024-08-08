@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from pspm.entities.toml import BaseToml
 
 
-class BasePyproject:
+class BasePyproject(abc.ABC):
     """Manipulate pyproject.
 
     Attributes:
