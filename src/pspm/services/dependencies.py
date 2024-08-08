@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from rich import print
+from rich import print as rprint
 
 from pspm.entities.installer import BaseInstaller, UVInstaller
 from pspm.entities.pyproject import Pyproject
@@ -43,7 +43,7 @@ def add_dependency(package: str, group: str | None = None) -> None:
     try:
         installer.install(package)
     except InstallError:
-        print(f":boom: [red]Failed to install {package}[/red]")
+        rprint(f":boom: [red]Failed to install {package}[/red]")
         return
 
     pyproject = _get_pyproject()
