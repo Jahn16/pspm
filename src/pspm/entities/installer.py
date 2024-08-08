@@ -17,7 +17,9 @@ class BaseInstaller(abc.ABC):
         """Install package.
 
         Args:
+        ----
             package: Package to install
+
         """
         raise NotImplementedError
 
@@ -26,7 +28,9 @@ class BaseInstaller(abc.ABC):
         """Uninstall package.
 
         Args:
+        ----
             package: Package to uninstall
+
         """
         raise NotImplementedError
 
@@ -42,7 +46,13 @@ class UVInstaller(BaseInstaller):
         """Install package.
 
         Args:
+        ----
             package: Package to install
+
+        Raises:
+        ------
+            InstallError: If can't install package
+
         """
         retcode = subprocess.call([self._uv_path, "pip", "install", package])  # noqa: S603
         if retcode != 0:
@@ -52,6 +62,8 @@ class UVInstaller(BaseInstaller):
         """Uninstall package.
 
         Args:
+        ----
             package: Package to uninstall
+
         """
         raise NotImplementedError
