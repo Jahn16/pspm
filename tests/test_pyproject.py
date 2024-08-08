@@ -64,3 +64,14 @@ def test_add_dependency_with_group(
         result["project"].get("optional-dependencies").get(group, [])
         == expected_dependencies
     )
+
+
+def test_dont_add_duplicate_dependency(
+    pyproject: Pyproject, toml_parser: BaseToml
+) -> None:
+    data = toml_parser.load()
+    dependencies = data["project"]["dependencies"].copy()
+    package = dependencies[1]
+    pyproject.add_dependency(package)
+    result = toml_parser.load()
+    assert result["project"]["dependencies"] == dependencies
