@@ -30,8 +30,12 @@
                 ruff = {
                   enable = true;
                   excludes = [ "tests" ];
+                  package = pkgs.ruff;
                 };
-                ruff-format.enable = true;
+                ruff-format = {
+                  enable = true;
+                  package = pkgs.ruff;
+                };
               };
             };
         });
