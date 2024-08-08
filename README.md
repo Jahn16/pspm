@@ -7,7 +7,7 @@ pspm is Python's Simplest Package Manager.
 I recommend using [pipx](https://pipx.pypa.io/stable/) to install pspm.
 
 ```bash
-pipx install spdm
+pipx install pspm
 ```
 
 ## Quickstart
