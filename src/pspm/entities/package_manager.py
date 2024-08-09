@@ -8,7 +8,7 @@ from pspm.errors.dependencies import InstallError
 
 if TYPE_CHECKING:
     from pspm.entities.installer import BaseInstaller
-    from pspm.entities.pyproject import Pyproject
+    from pspm.entities.pyproject import BasePyproject
     from pspm.entities.resolver import BaseResolver
 
 
@@ -17,7 +17,7 @@ class PackageManager:
 
     def __init__(
         self,
-        pyproject: Pyproject,
+        pyproject: BasePyproject,
         installer: BaseInstaller,
         resolver: BaseResolver,
     ) -> None:
