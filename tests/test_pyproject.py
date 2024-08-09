@@ -7,7 +7,7 @@ from pspm.entities.toml import BaseToml
 from pspm.entities.pyproject import Pyproject
 
 
-class TestToml(BaseToml):
+class DummyToml(BaseToml):
     def __init__(self, path: str) -> None:
         self.data = {
             "project": {
@@ -28,7 +28,7 @@ class TestToml(BaseToml):
 
 @pytest.fixture()
 def toml_parser() -> BaseToml:
-    return TestToml("foobar")
+    return DummyToml("foobar")
 
 
 @pytest.fixture()
