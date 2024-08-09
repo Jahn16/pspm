@@ -44,9 +44,18 @@ class PackageManager:
         except InstallError:
             return
 
-        if not group:
-            self._pyproject.add_dependency(package)
-        else:
+        group_file = "requirements-{}.lock"
+        if group:
             self._pyproject.add_group_dependency(package, group)
-        output_file = f"requirements{'-' + group if group else ''}.lock"
-        self._resolver.compile(output_file, group)
+            self._resolver.compile(group_file.format(group), group)
+            return
+
+        self._pyproject.add_dependency(package)
+        main_file = "requirements.lock"
+        file_and_groups = [
+            (group_file.format(g), g)
+            for g in self._pyproject.get_extra_groups()
+        ]
+        self._resolver.compile(main_file)
+        for f, g in file_and_groups:
+            self._resolver.compile(f, g)
