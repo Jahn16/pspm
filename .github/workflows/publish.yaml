@@ -40,7 +40,7 @@ jobs:
 
     environment:
       name: pypi
-      url: https://pypi.org/p/psdm
+      url: https://pypi.org/p/pspm
 
     steps:
       - name: Retrieve release distributions
