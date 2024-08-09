@@ -9,20 +9,8 @@ from typing import Any
 
 
 class DummyToml(BaseToml):
-    def __init__(self, path: str) -> None:
-        self.data = {
-            "project": {
-                "name": "test",
-                "dependencies": [
-                    "foo",
-                    "bar",
-                ],
-                "optional-dependencies": {
-                    "dev": ["developing"],
-                    "test": ["testing"],
-                },
-            },
-        }
+    def __init__(self, data: dict[str, Any]) -> None:
+        self.data = data
 
     def load(self) -> dict[str, Any]:
         return self.data
@@ -71,8 +59,25 @@ class DummyResolver(BaseResolver):
 
 
 @pytest.fixture
-def toml() -> BaseToml:
-    return DummyToml("bla")
+def data() -> dict[str, Any]:
+    return {
+        "project": {
+            "name": "test",
+            "dependencies": [
+                "foo",
+                "bar",
+            ],
+            "optional-dependencies": {
+                "dev": ["developing"],
+                "test": ["testing"],
+            },
+        },
+    }
+
+
+@pytest.fixture
+def toml(data: dict[str, Any]) -> BaseToml:
+    return DummyToml(data)
 
 
 @pytest.fixture
