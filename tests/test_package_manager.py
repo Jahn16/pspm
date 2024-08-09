@@ -17,6 +17,10 @@ class DummyToml(BaseToml):
                     "foo",
                     "bar",
                 ],
+                "optional-dependencies": {
+                    "dev": ["developing"],
+                    "test": ["testing"],
+                },
             },
         }
 
@@ -109,7 +113,22 @@ def test_add_dependency(
 
     assert package in pyproject.added_dependencies
     assert package in installer.installed_packages
-    assert resolver.output_files == ["requirements.lock"]
+    assert "requirements.lock" in resolver.output_files
+
+
+def test_add_dependency_compiles_all_files(
+    package: str,
+    package_manager: PackageManager,
+    resolver: DummyResolver,
+) -> None:
+    package_manager.add_dependency(package)
+
+    groups = ["dev", "test"]
+    files = ["requirements.lock"] + [
+        f"requirements-{group}" for group in groups
+    ]
+
+    assert resolver.output_files == files
 
 
 def test_add_dependency_with_group(
