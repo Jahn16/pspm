@@ -41,6 +41,10 @@ class DummyPyproject(BasePyproject):
             self.added_group_dependencies.get("group", []) + [package]
         )
 
+    def get_extra_groups(self) -> list[str]:
+        data = self._parser.load()
+        return list(data["project"].get("optional-dependencies", {}).keys())
+
 
 class DummyInstaller(BaseInstaller):
     def __init__(self) -> None:
