@@ -43,6 +43,11 @@ class BasePyproject(abc.ABC):
         """
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def get_extra_groups(self) -> list[str]:
+        """Retrieve list of extra groups."""
+        raise NotImplementedError
+
 
 class Pyproject(BasePyproject):
     """Class for manipulating pyproject.toml file."""
@@ -80,3 +85,16 @@ class Pyproject(BasePyproject):
         optional_dependencies[group] = dependencies
         data["project"]["optional-dependencies"] = optional_dependencies
         self._parser.dump(data)
+
+    def get_extra_groups(self) -> list[str]:
+        """Retrieve list of extra groups.
+
+        Returns:
+            List of extra groups
+        """
+        data = self._parser.load()
+        optional_dependencies = data["project"].get(
+            "optional-dependencies",
+            {},
+        )
+        return list(optional_dependencies.keys())
