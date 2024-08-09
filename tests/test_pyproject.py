@@ -83,6 +83,5 @@ def test_dont_add_duplicate_dependency(
 
 def test_get_extra_groups(pyproject: Pyproject, toml_parser: BaseToml) -> None:
     data = toml_parser.load()
-    expected_groups = list(data["project"]["optional-dependencies"].keys())
     result = pyproject.get_extra_groups()
-    assert result == expected_groups
+    assert result == ["dev", "test"]
