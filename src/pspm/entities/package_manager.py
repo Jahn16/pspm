@@ -44,29 +44,20 @@ class PackageManager:
         ])
         self._installer.install(".")
 
-    def add_dependency(self, package: str) -> None:
+    def add_dependency(self, package: str, group: str | None = None) -> None:
         """Add dependency to pyproject.
 
         Args:
             package: Package to install
             group: Group to insert package
         """
-        self._pyproject.add_dependency(package)
+        (
+            self._pyproject.add_dependency(package)
+            if not group
+            else self._pyproject.add_group_dependency(package, group)
+        )
         groups = self._pyproject.get_extra_groups()
         self._resolver.compile(self._main_requirements_file)
-        for file, group in zip(self._get_group_requirements_files(), groups):
-            self._resolver.compile(file, group)
+        for f, g in zip(self._get_group_requirements_files(), groups):
+            self._resolver.compile(f, g)
         self.install()
-
-    def add_dependency_with_group(self, package: str, group: str) -> None:
-        """Add dependency to pyproject with group.
-
-        Args:
-            package: Package to install
-            group: Group to insert package
-        """
-        requirements_file = self._group_requirements_file.format(group)
-        self._pyproject.add_group_dependency(package, group)
-        self._resolver.compile(requirements_file, group)
-        self._installer.sync([requirements_file])
-        self._installer.install(".")
