@@ -26,9 +26,15 @@ class DummyPyproject(BasePyproject):
         self.added_group_dependencies: dict[str, list[str]] = {}
 
     def add_dependency(self, package: str) -> None:
+        data = self._parser.load()
+        data["project"]["dependencies"] += [package]
+        self._parser.dump(data)
         self.added_dependencies.append(package)
 
     def add_group_dependency(self, package: str, group: str) -> None:
+        data = self._parser.load()
+        data["project"]["optional-dependencies"][group] += [package]
+        self._parser.dump(data)
         self.added_group_dependencies[group] = (
             self.added_group_dependencies.get("group", []) + [package]
         )
@@ -39,9 +45,9 @@ class DummyPyproject(BasePyproject):
 
 
 class DummyInstaller(BaseInstaller):
-    def __init__(self, requirements_per_file: dict[str, list[str]]) -> None:
+    def __init__(self, toml: BaseToml) -> None:
         self.installed_packages: list[str] = []
-        self.requirements_per_file = requirements_per_file
+        self._toml = toml
 
     def install(self, package: str) -> None:
         self.installed_packages.append(package)
@@ -50,9 +56,19 @@ class DummyInstaller(BaseInstaller):
         raise NotImplementedError
 
     def sync(self, requirements_files: list[str]) -> None:
-        packages = []
+        data = self._toml.load()
+        requirements_per_file = {
+            "requirements.lock": data["project"]["dependencies"],
+            "requirements-dev.lock": data["project"]["optional-dependencies"][
+                "dev"
+            ],
+            "requirements-test.lock": data["project"]["optional-dependencies"][
+                "test"
+            ],
+        }
+        packages: list[str] = []
         for f in requirements_files:
-            packages.extend(self.requirements_per_file[f])
+            packages.extend(requirements_per_file[f])
         self.installed_packages = packages
 
 
@@ -71,33 +87,32 @@ def requirements() -> dict[str, list[str]]:
 
 
 @pytest.fixture
-def data(dependencies: dict[str, list[str]]) -> dict[str, Any]:
+def data(requirements: dict[str, list[str]]) -> dict[str, Any]:
     return {
         "project": {
             "name": "test",
-            "dependencies": dependencies["main"],
+            "dependencies": requirements["main"],
             "optional-dependencies": {
-                "dev": dependencies["dev"],
-                "test": dependencies["test"],
+                "dev": requirements["dev"],
+                "test": requirements["test"],
             },
         },
     }
 
 
 @pytest.fixture
-def pyproject(data: dict[str, Any]) -> BasePyproject:
-    toml = DummyToml(data)
+def toml(data: dict[str, Any]) -> BaseToml:
+    return DummyToml(data)
+
+
+@pytest.fixture
+def pyproject(toml: BaseToml) -> BasePyproject:
     return DummyPyproject(toml)
 
 
 @pytest.fixture
-def installer(requirements: dict[str, list[str]]) -> BaseInstaller:
-    requirements = {
-        "requirements.lock": requirements["main"],
-        "requirements-dev.lock": requirements["dev"],
-        "requirements-test.lock": requirements["test"],
-    }
-    return DummyInstaller(requirements)
+def installer(toml: BaseToml) -> BaseInstaller:
+    return DummyInstaller(toml)
 
 
 @pytest.fixture
