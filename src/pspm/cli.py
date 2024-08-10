@@ -5,7 +5,7 @@ from typing import Annotated
 import typer
 from rich import print as rprint
 
-from pspm.services.dependencies import add_dependency
+from pspm.services.dependencies import add_dependency, install_dependencies
 
 app = typer.Typer()
 
@@ -13,6 +13,13 @@ app = typer.Typer()
 @app.callback()
 def callback() -> None:
     """Python simple package manager."""
+
+
+@app.command()
+def install() -> None:
+    """Install all dependencies and the package itself."""
+    rprint("Installing project")
+    install_dependencies()
 
 
 @app.command()

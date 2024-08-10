@@ -31,6 +31,16 @@ def _get_installer() -> BaseInstaller:
     return UVInstaller()
 
 
+def _get_package_manager() -> PackageManager:
+    return PackageManager(_get_pyproject(), _get_installer(), _get_resolver())
+
+
+def install_dependencies() -> None:
+    """Install all dependencies and the package itself."""
+    package_manager = _get_package_manager()
+    package_manager.install()
+
+
 def add_dependency(package: str, group: str | None = None) -> None:
     """Add dependency to pyproject.
 
@@ -38,7 +48,5 @@ def add_dependency(package: str, group: str | None = None) -> None:
         package: Package to install
         group: Group to insert package
     """
-    package_manager = PackageManager(
-        _get_pyproject(), _get_installer(), _get_resolver()
-    )
+    package_manager = _get_package_manager()
     package_manager.add_dependency(package, group)
