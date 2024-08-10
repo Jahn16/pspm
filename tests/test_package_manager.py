@@ -39,14 +39,21 @@ class DummyPyproject(BasePyproject):
 
 
 class DummyInstaller(BaseInstaller):
-    def __init__(self) -> None:
+    def __init__(self, requirements_per_file: dict[str, list[str]]) -> None:
         self.installed_packages: list[str] = []
+        self.requirements_per_file = requirements_per_file
 
     def install(self, package: str) -> None:
         self.installed_packages.append(package)
 
     def uninstall(self, package: str) -> None:
         raise NotImplementedError
+
+    def sync(self, requirements_files: list[str]) -> None:
+        packages = []
+        for f in requirements_files:
+            packages.extend(self.requirements_per_file[f])
+        self.installed_packages = packages
 
 
 class DummyResolver(BaseResolver):
@@ -86,8 +93,14 @@ def pyproject(toml: BaseToml) -> BasePyproject:
 
 
 @pytest.fixture
-def installer() -> BaseInstaller:
-    return DummyInstaller()
+def installer(data: dict[str, Any]) -> BaseInstaller:
+    requirements = {
+        "requirements.lock": data["project"]["dependencies"],
+        "requirements-dev.lock": data["project"]["optional-dependencies"][
+            "dev"
+        ],
+    }
+    return DummyInstaller(requirements)
 
 
 @pytest.fixture
