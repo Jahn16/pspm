@@ -169,7 +169,7 @@ def test_add_dependency_with_group(
     resolver: DummyResolver,
 ) -> None:
     group = "test"
-    package_manager.add_dependency(package, group)
+    package_manager.add_dependency_with_group(package, group)
 
     assert package in pyproject.added_group_dependencies.get(group, [])
     assert package in installer.installed_packages
