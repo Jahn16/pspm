@@ -60,6 +60,7 @@ ignore = [
     "CPY",
     "COM812",
     "S404",
+    "S603",
 ]
 extend-safe-fixes = [
     "FA102",
