@@ -29,6 +29,20 @@ class PackageManager:
         self._pyproject = pyproject
         self._installer = installer
         self._resolver = resolver
+        self._main_requirements_file = "requirements.lock"
+        self._group_requirements_file = "requirements-{}.lock"
+
+    def _get_group_requirements_files(self) -> list[str]:
+        groups = self._pyproject.get_extra_groups()
+        return [self._group_requirements_file.format(g) for g in groups]
+
+    def install(self) -> None:
+        """Install all dependencies and the package itself."""
+        self._installer.sync([
+            self._main_requirements_file,
+            *self._get_group_requirements_files(),
+        ])
+        self._installer.install(".")
 
     def add_dependency(self, package: str) -> None:
         """Add dependency to pyproject.
@@ -38,15 +52,11 @@ class PackageManager:
             group: Group to insert package
         """
         self._pyproject.add_dependency(package)
-        main_file = "requirements.lock"
-        group_file_format = "requirements-{}.lock"
-        all_groups = self._pyproject.get_extra_groups()
-        group_files = [group_file_format.format(g) for g in all_groups]
-        self._resolver.compile(main_file)
-        for f, g in zip(group_files, all_groups):
-            self._resolver.compile(f, g)
-        self._installer.sync([main_file, *group_files])
-        self._installer.install(".")
+        groups = self._pyproject.get_extra_groups()
+        self._resolver.compile(self._main_requirements_file)
+        for file, group in zip(self._get_group_requirements_files(), groups):
+            self._resolver.compile(file, group)
+        self.install()
 
     def add_dependency_with_group(self, package: str, group: str) -> None:
         """Add dependency to pyproject with group.
@@ -55,8 +65,8 @@ class PackageManager:
             package: Package to install
             group: Group to insert package
         """
-        group_file = f"requirements-{group}.lock"
+        requirements_file = self._group_requirements_file.format(group)
         self._pyproject.add_group_dependency(package, group)
-        self._resolver.compile(group_file, group)
-        self._installer.sync([group_file])
+        self._resolver.compile(requirements_file, group)
+        self._installer.sync([requirements_file])
         self._installer.install(".")
