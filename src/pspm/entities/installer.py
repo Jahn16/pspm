@@ -1,4 +1,7 @@
+# ruff: noqa: S603
 """Module with classes to deal with packages."""
+
+from __future__ import annotations
 
 import abc
 import subprocess
@@ -32,6 +35,18 @@ class BaseInstaller(abc.ABC):
         """
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def sync(self, requirements_files: list[str]) -> None:
+        """Sync an environment with requirements files.
+
+        Install all dependencies listed in requirements files
+        and removes the ones that are not listed.
+
+        Args:
+            requirements_files: Path to files containing requirements
+        """
+        raise NotImplementedError
+
 
 class UVInstaller(BaseInstaller):
     """Install packages with UV."""
@@ -49,7 +64,7 @@ class UVInstaller(BaseInstaller):
         Raises:
             InstallError: If can't install package
         """
-        retcode = subprocess.call([self._uv_path, "pip", "install", package])  # noqa: S603
+        retcode = subprocess.call([self._uv_path, "pip", "install", package])
         if retcode != 0:
             raise InstallError(package)
 
@@ -60,3 +75,14 @@ class UVInstaller(BaseInstaller):
             package: Package to uninstall
         """
         raise NotImplementedError
+
+    def sync(self, requirements_files: list[str]) -> None:
+        """Sync an environment with requirements files.
+
+        Install all dependencies listed in requirements files
+        and removes the ones that are not listed.
+
+        Args:
+            requirements_files: Path to files containing requirements
+        """
+        subprocess.call([self._uv_path, "pip", "sync", *requirements_files])
