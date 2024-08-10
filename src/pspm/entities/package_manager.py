@@ -42,7 +42,7 @@ class PackageManager:
             self._main_requirements_file,
             *self._get_group_requirements_files(),
         ])
-        self._installer.install(".")
+        self._installer.install(".", editable=True)
 
     def add_dependency(self, package: str, group: str | None = None) -> None:
         """Add dependency to pyproject.
