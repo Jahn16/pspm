@@ -65,40 +65,37 @@ class DummyResolver(BaseResolver):
         self.output_files.append(output_file)
 
 
+@pytest.fixture()
+def requirements() -> dict[str, list[str]]:
+    return {"main": ["foo", "bar"], "dev": ["developing"], "test": ["testing"]}
+
+
 @pytest.fixture
-def data() -> dict[str, Any]:
+def data(dependencies: dict[str, list[str]]) -> dict[str, Any]:
     return {
         "project": {
             "name": "test",
-            "dependencies": [
-                "foo",
-                "bar",
-            ],
+            "dependencies": dependencies["main"],
             "optional-dependencies": {
-                "dev": ["developing"],
-                "test": ["testing"],
+                "dev": dependencies["dev"],
+                "test": dependencies["test"],
             },
         },
     }
 
 
 @pytest.fixture
-def toml(data: dict[str, Any]) -> BaseToml:
-    return DummyToml(data)
-
-
-@pytest.fixture
-def pyproject(toml: BaseToml) -> BasePyproject:
+def pyproject(data: dict[str, Any]) -> BasePyproject:
+    toml = DummyToml(data)
     return DummyPyproject(toml)
 
 
 @pytest.fixture
-def installer(data: dict[str, Any]) -> BaseInstaller:
+def installer(requirements: dict[str, list[str]]) -> BaseInstaller:
     requirements = {
-        "requirements.lock": data["project"]["dependencies"],
-        "requirements-dev.lock": data["project"]["optional-dependencies"][
-            "dev"
-        ],
+        "requirements.lock": requirements["main"],
+        "requirements-dev.lock": requirements["dev"],
+        "requirements-test.lock": requirements["test"],
     }
     return DummyInstaller(requirements)
 
