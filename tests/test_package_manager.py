@@ -49,7 +49,7 @@ class DummyInstaller(BaseInstaller):
         self.installed_packages: list[str] = []
         self._toml = toml
 
-    def install(self, package: str) -> None:
+    def install(self, package: str, *, editable=True) -> None:
         self.installed_packages.append(package)
 
     def uninstall(self, package: str) -> None:
