@@ -62,7 +62,7 @@ class UVInstaller(BaseInstaller):
             editable: Whether to install in editable mode
 
         Raises:
-            InstallError: Bla.
+            InstallError: If can't install package.
         """
         retcode = subprocess.call([
             self._uv_path,
