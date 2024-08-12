@@ -38,7 +38,7 @@ class DummyPyproject(BasePyproject):
                 self.added_dependencies.append(package)
             else:
                 data["project"]["dependencies"].remove(package)
-                self.uninstalled_dependencies.remove(package)
+                self.uninstalled_dependencies.append(package)
         else:
             if action == "add":
                 data["project"]["optional-dependencies"][group] += [package]
@@ -47,8 +47,10 @@ class DummyPyproject(BasePyproject):
                 )
             else:
                 data["project"]["optional-dependencies"][group].remove(package)
-                self.uninstalled_dependencies.remove(package)
-
+                self.uninstalled_group_dependencies[group] = (
+                    self.uninstalled_group_dependencies.get("group", [])
+                    + [package]
+                )
         self._parser.dump(data)
 
     def get_extra_groups(self) -> list[str]:
@@ -177,18 +179,32 @@ def test_add_dependency(
     resolver: DummyResolver,
 ) -> None:
     package_manager.manage_dependency("add", package)
-
     assert package in pyproject.added_dependencies
     assert package in installer.installed_packages
     assert "requirements.lock" in resolver.output_files
 
 
-def test_add_dependency_compiles_all_files(
-    package: str,
+def test_remove_dependency(
+    package_manager: PackageManager,
+    pyproject: DummyPyproject,
+    installer: DummyInstaller,
+    resolver: DummyResolver,
+) -> None:
+    package = "foo"
+    package_manager.manage_dependency("remove", package)
+    assert package in pyproject.uninstalled_dependencies
+    assert package not in installer.installed_packages
+    assert "requirements.lock" in resolver.output_files
+
+
+@pytest.mark.parametrize("action", ["add", "remove"])
+def test_manage_dependency_compiles_all_files(
+    action: Literal["add", "remove"],
     package_manager: PackageManager,
     resolver: DummyResolver,
 ) -> None:
-    package_manager.manage_dependency("add", package)
+    package = "bla" if action == "add" else "foo"
+    package_manager.manage_dependency(action, package)
 
     groups = ["dev", "test"]
     files = ["requirements.lock"] + [
@@ -210,4 +226,19 @@ def test_add_dependency_with_group(
 
     assert package in pyproject.added_group_dependencies.get(group, [])
     assert package in installer.installed_packages
+    assert f"requirements-{group}.lock" in resolver.output_files
+
+
+def test_remove_dependency_with_group(
+    package_manager: PackageManager,
+    pyproject: DummyPyproject,
+    installer: DummyInstaller,
+    resolver: DummyResolver,
+) -> None:
+    package = "testing"
+    group = "test"
+    package_manager.manage_dependency("remove", package, group)
+
+    assert package in pyproject.uninstalled_group_dependencies.get(group, [])
+    assert package not in installer.installed_packages
     assert f"requirements-{group}.lock" in resolver.output_files
