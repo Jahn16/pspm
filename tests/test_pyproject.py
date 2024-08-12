@@ -18,6 +18,11 @@ class DummyToml(BaseToml):
         self.data = data
 
 
+@pytest.fixture()
+def requirements() -> dict[str, list[str]]:
+    return {"main": ["foo", "bar"], "dev": ["developing"], "test": ["testing"]}
+
+
 @pytest.fixture
 def data(requirements: dict[str, list[str]]) -> dict[str, Any]:
     return {
@@ -30,11 +35,6 @@ def data(requirements: dict[str, list[str]]) -> dict[str, Any]:
             },
         },
     }
-
-
-@pytest.fixture()
-def requirements() -> dict[str, list[str]]:
-    return {"main": ["foo", "bar"], "dev": ["developing"], "test": ["testing"]}
 
 
 @pytest.fixture
@@ -89,9 +89,10 @@ def test_add_dependency_with_group(
 def test_remove_dependency_with_group(
     pyproject: Pyproject, toml_parser: BaseToml
 ) -> None:
-    pyproject.manage_dependency("remove", "developing", "dev")
+    group = "dev"
+    pyproject.manage_dependency("remove", "developing", group)
     result = toml_parser.load()
-    assert result["project"]["dependencies"] == []
+    assert result["project"]["optional-dependencies"][group] == []
 
 
 def test_dont_add_duplicate_dependency(
