@@ -62,7 +62,7 @@ def test_add_dependency_with_group(
     ).get(group, []) + [
         package,
     ]
-    pyproject.add_group_dependency(package, group)
+    pyproject.add_dependency(package, group)
     result = toml_parser.load()
     assert (
         result["project"].get("optional-dependencies").get(group, [])

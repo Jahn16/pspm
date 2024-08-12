@@ -26,19 +26,17 @@ class DummyPyproject(BasePyproject):
         self.added_dependencies: list[str] = []
         self.added_group_dependencies: dict[str, list[str]] = {}
 
-    def add_dependency(self, package: str) -> None:
+    def add_dependency(self, package: str, group: str | None = None) -> None:
         data = self._parser.load()
-        data["project"]["dependencies"] += [package]
+        if not group:
+            data["project"]["dependencies"] += [package]
+            self.added_dependencies.append(package)
+        else:
+            data["project"]["optional-dependencies"][group] += [package]
+            self.added_group_dependencies[group] = (
+                self.added_group_dependencies.get("group", []) + [package]
+            )
         self._parser.dump(data)
-        self.added_dependencies.append(package)
-
-    def add_group_dependency(self, package: str, group: str) -> None:
-        data = self._parser.load()
-        data["project"]["optional-dependencies"][group] += [package]
-        self._parser.dump(data)
-        self.added_group_dependencies[group] = (
-            self.added_group_dependencies.get("group", []) + [package]
-        )
 
     def get_extra_groups(self) -> list[str]:
         data = self._parser.load()
