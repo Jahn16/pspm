@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import abc
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Literal
 
 if TYPE_CHECKING:
     from pspm.entities.toml import BaseToml
@@ -35,6 +35,22 @@ class BasePyproject(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def manage_dependency(
+        self,
+        action: Literal["add", "remove"],
+        package: str,
+        group: str | None = None,
+    ) -> None:
+        """Add or removes dependency from project.
+
+        Args:
+            action: Action to take can be either add or remove
+            package: Package to manage
+            group: Group that package belongs
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def get_extra_groups(self) -> list[str]:
         """Retrieve list of extra groups."""
         raise NotImplementedError
@@ -42,6 +58,46 @@ class BasePyproject(abc.ABC):
 
 class Pyproject(BasePyproject):
     """Class for manipulating pyproject.toml file."""
+
+    def manage_dependency(
+        self,
+        action: Literal["add", "remove"],
+        package: str,
+        group: str | None = None,
+    ) -> None:
+        """Add or removes dependency from project.
+
+        Args:
+            action: Action to take can be either add or remove
+            package: Package to manage
+            group: Group that package belongs
+        """
+        data = self._parser.load()
+        project: dict[str, Any] = data.get("project", {})
+        optional_dependencies: dict[str, list[str]] = project.get(
+            "optional-dependencies", {}
+        )
+        packages: list[str] = (
+            project.get("dependencies", [])
+            if not group
+            else optional_dependencies.get(group, [])
+        )
+        if (action == "add" and package in packages) or (
+            action == "remove" and package not in packages
+        ):
+            return
+        (
+            packages.append(package)
+            if action == "add"
+            else packages.remove(package)
+        )
+        if not group:
+            project["dependencies"] = packages
+        else:
+            optional_dependencies[group] = packages
+            project["optional-dependencies"] = optional_dependencies
+        data["project"] = project
+        self._parser.dump(data)
 
     def add_dependency(self, package: str, group: str | None = None) -> None:
         """Add dependency to project.
