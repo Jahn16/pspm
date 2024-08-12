@@ -1,4 +1,3 @@
-# ruff: noqa: S603
 """Module with classes to deal with packages."""
 
 from __future__ import annotations

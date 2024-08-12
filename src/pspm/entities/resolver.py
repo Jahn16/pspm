@@ -47,7 +47,7 @@ class UVResolver(BaseResolver):
             group: Group to include dependencies from
         """
         extra_arguments = ["--extra", group] if group else []
-        subprocess.call([  # noqa: S603
+        subprocess.call([
             self._uv_path,
             "pip",
             "compile",
