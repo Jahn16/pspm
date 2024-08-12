@@ -92,6 +92,12 @@ class DummyVenv(BaseVirtualEnv):
     def create(self) -> None:
         self.created = True
 
+    def activate(self) -> None:
+        raise NotImplementedError
+
+    def run(self, command: str) -> None:
+        raise NotImplementedError
+
 
 @pytest.fixture()
 def requirements() -> dict[str, list[str]]:
