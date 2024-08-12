@@ -8,6 +8,7 @@ if TYPE_CHECKING:
     from pspm.entities.installer import BaseInstaller
     from pspm.entities.pyproject import BasePyproject
     from pspm.entities.resolver import BaseResolver
+    from pspm.entities.virtual_env import BaseVirtualEnv
 
 
 class PackageManager:
@@ -18,6 +19,7 @@ class PackageManager:
         pyproject: BasePyproject,
         installer: BaseInstaller,
         resolver: BaseResolver,
+        virtual_env: BaseVirtualEnv,
     ) -> None:
         """Initialize PackageManager.
 
@@ -25,10 +27,13 @@ class PackageManager:
             pyproject: BasePyproject to manipulate pyproject file
             installer: BaseInstaller to install depencies
             resolver: BaseResolver to resolve dependencies
+            virtual_env: BaseVirtualEnv to manage venv
         """
         self._pyproject = pyproject
         self._installer = installer
         self._resolver = resolver
+        self._virtual_env = virtual_env
+
         self._main_requirements_file = "requirements.lock"
         self._group_requirements_file = "requirements-{}.lock"
 
@@ -38,6 +43,9 @@ class PackageManager:
 
     def install(self) -> None:
         """Install all dependencies and the package itself."""
+        if not self._virtual_env.already_created():
+            self._virtual_env.create()
+
         self._installer.sync([
             self._main_requirements_file,
             *self._get_group_requirements_files(),
