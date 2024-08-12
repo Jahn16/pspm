@@ -38,6 +38,11 @@ class DummyPyproject(BasePyproject):
             )
         self._parser.dump(data)
 
+    def remove_dependency(
+        self, package: str, group: str | None = None
+    ) -> None:
+        return
+
     def get_extra_groups(self) -> list[str]:
         data = self._parser.load()
         return list(data["project"].get("optional-dependencies", {}).keys())
