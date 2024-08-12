@@ -1,3 +1,4 @@
+from pspm.entities.virtual_env import BaseVirtualEnv
 import pytest
 
 from pspm.entities.package_manager import PackageManager
@@ -81,6 +82,17 @@ class DummyResolver(BaseResolver):
         self.output_files.append(output_file)
 
 
+class DummyVenv(BaseVirtualEnv):
+    def __init__(self) -> None:
+        self.created = False
+
+    def already_created(self) -> bool:
+        return self.created
+
+    def create(self) -> None:
+        self.created = True
+
+
 @pytest.fixture()
 def requirements() -> dict[str, list[str]]:
     return {"main": ["foo", "bar"], "dev": ["developing"], "test": ["testing"]}
@@ -116,15 +128,23 @@ def installer(toml: BaseToml) -> BaseInstaller:
 
 
 @pytest.fixture
+def virtual_env() -> BaseVirtualEnv:
+    return DummyVenv()
+
+
+@pytest.fixture
 def resolver() -> BaseResolver:
     return DummyResolver()
 
 
 @pytest.fixture
 def package_manager(
-    pyproject: BasePyproject, installer: BaseInstaller, resolver: BaseResolver
+    pyproject: BasePyproject,
+    installer: BaseInstaller,
+    resolver: BaseResolver,
+    virtual_env: BaseVirtualEnv,
 ) -> PackageManager:
-    return PackageManager(pyproject, installer, resolver)
+    return PackageManager(pyproject, installer, resolver, virtual_env)
 
 
 @pytest.fixture
