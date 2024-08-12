@@ -6,7 +6,7 @@ from pspm.entities.pyproject import BasePyproject
 from pspm.entities.toml import BaseToml
 from pspm.entities.installer import BaseInstaller
 from pspm.entities.resolver import BaseResolver
-from typing import Any
+from typing import Any, Literal
 
 
 class DummyToml(BaseToml):
@@ -25,23 +25,31 @@ class DummyPyproject(BasePyproject):
         self._parser = toml_parser
         self.added_dependencies: list[str] = []
         self.added_group_dependencies: dict[str, list[str]] = {}
+        self.uninstalled_dependencies: list[str] = []
+        self.uninstalled_group_dependencies: dict[str, list[str]] = {}
 
-    def add_dependency(self, package: str, group: str | None = None) -> None:
+    def manage_dependency(
+        self, action: str, package: str, group: str | None = None
+    ) -> None:
         data = self._parser.load()
         if not group:
-            data["project"]["dependencies"] += [package]
-            self.added_dependencies.append(package)
+            if action == "add":
+                data["project"]["dependencies"] += [package]
+                self.added_dependencies.append(package)
+            else:
+                data["project"]["dependencies"].remove(package)
+                self.uninstalled_dependencies.remove(package)
         else:
-            data["project"]["optional-dependencies"][group] += [package]
-            self.added_group_dependencies[group] = (
-                self.added_group_dependencies.get("group", []) + [package]
-            )
-        self._parser.dump(data)
+            if action == "add":
+                data["project"]["optional-dependencies"][group] += [package]
+                self.added_group_dependencies[group] = (
+                    self.added_group_dependencies.get("group", []) + [package]
+                )
+            else:
+                data["project"]["optional-dependencies"][group].remove(package)
+                self.uninstalled_dependencies.remove(package)
 
-    def remove_dependency(
-        self, package: str, group: str | None = None
-    ) -> None:
-        return
+        self._parser.dump(data)
 
     def get_extra_groups(self) -> list[str]:
         data = self._parser.load()
@@ -53,7 +61,7 @@ class DummyInstaller(BaseInstaller):
         self.installed_packages: list[str] = []
         self._toml = toml
 
-    def install(self, package: str, *, editable=True) -> None:
+    def install(self, package: str, *, editable: bool = True) -> None:
         self.installed_packages.append(package)
 
     def uninstall(self, package: str) -> None:
@@ -168,7 +176,7 @@ def test_add_dependency(
     installer: DummyInstaller,
     resolver: DummyResolver,
 ) -> None:
-    package_manager.add_dependency(package)
+    package_manager.manage_dependency("add", package)
 
     assert package in pyproject.added_dependencies
     assert package in installer.installed_packages
@@ -180,7 +188,7 @@ def test_add_dependency_compiles_all_files(
     package_manager: PackageManager,
     resolver: DummyResolver,
 ) -> None:
-    package_manager.add_dependency(package)
+    package_manager.manage_dependency("add", package)
 
     groups = ["dev", "test"]
     files = ["requirements.lock"] + [
@@ -198,7 +206,7 @@ def test_add_dependency_with_group(
     resolver: DummyResolver,
 ) -> None:
     group = "test"
-    package_manager.add_dependency(package, group)
+    package_manager.manage_dependency("add", package, group)
 
     assert package in pyproject.added_group_dependencies.get(group, [])
     assert package in installer.installed_packages
