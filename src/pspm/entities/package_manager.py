@@ -59,7 +59,7 @@ class PackageManager:
             package: Package to install
             group: Group to insert package
         """
-        self._pyproject.add_dependency(package, group)
+        self._pyproject.manage_dependency("add", package, group)
         groups = self._pyproject.get_extra_groups()
         self._resolver.compile(self._main_requirements_file)
         for f, g in zip(self._get_group_requirements_files(), groups):
