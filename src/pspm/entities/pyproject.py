@@ -35,16 +35,6 @@ class BasePyproject(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def add_group_dependency(self, package: str, group: str) -> None:
-        """Add optional-dependency with group to project.
-
-        Args:
-            package: Package to install
-            group: Group that package will be inserted
-        """
-        raise NotImplementedError
-
-    @abc.abstractmethod
     def get_extra_groups(self) -> list[str]:
         """Retrieve list of extra groups."""
         raise NotImplementedError
