@@ -19,12 +19,12 @@ spm add -g dev pytest
 ```
 
 ## Roadmap
-
-- [ ] Dependencies
-  - [x] Add
-  - [ ] Remove
-  - [ ] Sync
-- [ ] Create base project
+### Comands
+- [ ] Init
+- [x] Install
+- [x] Add
+- [ ] Remove
+- [ ] Run
 
 ## License
 
