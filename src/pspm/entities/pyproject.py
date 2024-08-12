@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import abc
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from pspm.entities.toml import BaseToml
@@ -25,11 +25,12 @@ class BasePyproject(abc.ABC):
         self._parser = toml_parser
 
     @abc.abstractmethod
-    def add_dependency(self, package: str) -> None:
+    def add_dependency(self, package: str, group: str | None = None) -> None:
         """Add dependency to project.
 
         Args:
             package: Package to download
+            group: Group that package will be inserted
         """
         raise NotImplementedError
 
@@ -52,38 +53,32 @@ class BasePyproject(abc.ABC):
 class Pyproject(BasePyproject):
     """Class for manipulating pyproject.toml file."""
 
-    def add_dependency(self, package: str) -> None:
+    def add_dependency(self, package: str, group: str | None = None) -> None:
         """Add dependency to project.
 
         Args:
             package: Package to download
-        """
-        data = self._parser.load()
-        dependencies: list[str] = data["project"].get("dependencies", [])
-        if package in dependencies:
-            return
-        dependencies.append(package)
-        data["project"]["dependencies"] = dependencies
-        self._parser.dump(data)
-
-    def add_group_dependency(self, package: str, group: str) -> None:
-        """Add optional-dependency with group to project.
-
-        Args:
-            package: Package to install
             group: Group that package will be inserted
         """
         data = self._parser.load()
-        optional_dependencies = data["project"].get(
-            "optional-dependencies",
-            {},
+        project: dict[str, Any] = data.get("project", {})
+        optional_dependencies: dict[str, list[str]] = project.get(
+            "optional-dependencies", {}
         )
-        dependencies = optional_dependencies.get(group, [])
-        if package in dependencies:
+        packages: list[str] = (
+            project.get("dependencies", [])
+            if not group
+            else optional_dependencies.get(group, [])
+        )
+        if package in packages:
             return
-        dependencies.append(package)
-        optional_dependencies[group] = dependencies
-        data["project"]["optional-dependencies"] = optional_dependencies
+        packages.append(package)
+        if not group:
+            project["dependencies"] = packages
+        else:
+            optional_dependencies[group] = packages
+            project["optional-dependencies"] = optional_dependencies
+        data["project"] = project
         self._parser.dump(data)
 
     def get_extra_groups(self) -> list[str]:
