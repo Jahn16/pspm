@@ -60,7 +60,7 @@ def test_remove_dependency(
     pyproject: Pyproject, toml_parser: BaseToml
 ) -> None:
     package = "foo"
-    pyproject.remove_dependency(package)
+    pyproject.manage_dependency("remove", package)
     result = toml_parser.load()
     assert result["project"]["dependencies"] == ["bar"]
 
@@ -89,7 +89,7 @@ def test_add_dependency_with_group(
 def test_remove_dependency_with_group(
     pyproject: Pyproject, toml_parser: BaseToml
 ) -> None:
-    pyproject.remove_dependency("developing", "dev")
+    pyproject.manage_dependency("remove", "developing", "dev")
     result = toml_parser.load()
     assert result["project"]["dependencies"] == []
 
