@@ -35,14 +35,13 @@ class BaseVirtualEnv(abc.ABC):
         raise NotImplementedError
 
 
-class VirtualEnv(abc.ABC):
+class VirtualEnv(BaseVirtualEnv):
     """Interacts with virtualenv."""
 
     def __init__(self) -> None:
         """Initialize BaseVirtualEnv."""
         self._path = ".venv"
 
-    @abc.abstractmethod
     def already_created(self) -> bool:
         """Check if env is already created.
 
@@ -52,18 +51,15 @@ class VirtualEnv(abc.ABC):
         p = Path(self._path)
         return p.exists()
 
-    @abc.abstractmethod
     def create(self) -> None:
         """Create virtualenv."""
         uv_path = get_uv_path()
         subprocess.run([uv_path, "venv", self._path], check=False)
 
-    @abc.abstractmethod
     def activate(self) -> None:
         """Activate virtualenv."""
         raise NotImplementedError
 
-    @abc.abstractmethod
     def run(self, command: str) -> None:
         """Run command inside virtualenv.
 
