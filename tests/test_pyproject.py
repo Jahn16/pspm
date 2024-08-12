@@ -51,7 +51,7 @@ def test_add_dependency(pyproject: Pyproject, toml_parser: BaseToml) -> None:
     package = "bla"
     data = toml_parser.load()
     expected_dependencies = data["project"]["dependencies"] + [package]
-    pyproject.add_dependency(package)
+    pyproject.manage_dependency("add", package)
     result = toml_parser.load()
     assert result["project"]["dependencies"] == expected_dependencies
 
@@ -78,7 +78,7 @@ def test_add_dependency_with_group(
     ).get(group, []) + [
         package,
     ]
-    pyproject.add_dependency(package, group)
+    pyproject.manage_dependency("add", package, group)
     result = toml_parser.load()
     assert (
         result["project"].get("optional-dependencies").get(group, [])
@@ -101,7 +101,7 @@ def test_dont_add_duplicate_dependency(
     data = toml_parser.load()
     dependencies = data["project"]["dependencies"].copy()
     package = dependencies[1]
-    pyproject.add_dependency(package)
+    pyproject.manage_dependency("add", package)
     result = toml_parser.load()
     assert result["project"]["dependencies"] == dependencies
 
