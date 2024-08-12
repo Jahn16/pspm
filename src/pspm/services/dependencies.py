@@ -9,6 +9,7 @@ from pspm.entities.package_manager import PackageManager
 from pspm.entities.pyproject import Pyproject
 from pspm.entities.resolver import BaseResolver, UVResolver
 from pspm.entities.toml import Toml
+from pspm.entities.virtual_env import VirtualEnv
 
 
 def _get_pyproject_path() -> str:
@@ -32,7 +33,10 @@ def _get_installer() -> BaseInstaller:
 
 
 def _get_package_manager() -> PackageManager:
-    return PackageManager(_get_pyproject(), _get_installer(), _get_resolver())
+    virtual_env = VirtualEnv()
+    return PackageManager(
+        _get_pyproject(), _get_installer(), _get_resolver(), virtual_env
+    )
 
 
 def install_dependencies() -> None:
