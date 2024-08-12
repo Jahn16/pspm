@@ -25,16 +25,6 @@ class BasePyproject(abc.ABC):
         self._parser = toml_parser
 
     @abc.abstractmethod
-    def add_dependency(self, package: str, group: str | None = None) -> None:
-        """Add dependency to project.
-
-        Args:
-            package: Package to download
-            group: Group that package will be inserted
-        """
-        raise NotImplementedError
-
-    @abc.abstractmethod
     def manage_dependency(
         self,
         action: Literal["add", "remove"],
@@ -91,34 +81,6 @@ class Pyproject(BasePyproject):
             if action == "add"
             else packages.remove(package)
         )
-        if not group:
-            project["dependencies"] = packages
-        else:
-            optional_dependencies[group] = packages
-            project["optional-dependencies"] = optional_dependencies
-        data["project"] = project
-        self._parser.dump(data)
-
-    def add_dependency(self, package: str, group: str | None = None) -> None:
-        """Add dependency to project.
-
-        Args:
-            package: Package to download
-            group: Group that package will be inserted
-        """
-        data = self._parser.load()
-        project: dict[str, Any] = data.get("project", {})
-        optional_dependencies: dict[str, list[str]] = project.get(
-            "optional-dependencies", {}
-        )
-        packages: list[str] = (
-            project.get("dependencies", [])
-            if not group
-            else optional_dependencies.get(group, [])
-        )
-        if package in packages:
-            return
-        packages.append(package)
         if not group:
             project["dependencies"] = packages
         else:
