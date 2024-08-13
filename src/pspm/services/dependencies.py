@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Literal
 
 from pspm.entities.installer import BaseInstaller, UVInstaller
 from pspm.entities.package_manager import PackageManager
@@ -45,12 +46,15 @@ def install_dependencies() -> None:
     package_manager.install()
 
 
-def add_dependency(package: str, group: str | None = None) -> None:
+def manage_dependency(
+    action: Literal["add", "remove"], package: str, group: str | None = None
+) -> None:
     """Add dependency to pyproject.
 
     Args:
+        action: Action to take can be either add or remove
         package: Package to install
         group: Group to insert package
     """
     package_manager = _get_package_manager()
-    package_manager.add_dependency(package, group)
+    package_manager.manage_dependency(action, package, group)
