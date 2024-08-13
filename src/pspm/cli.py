@@ -1,10 +1,13 @@
 """main."""
 
+from __future__ import annotations
+
 from typing import Annotated
 
 import typer
 from rich import print as rprint
 
+from pspm.services.bootstrap import bootstrap_project
 from pspm.services.dependencies import (
     install_dependencies,
     manage_dependency,
@@ -16,6 +19,17 @@ app = typer.Typer()
 @app.callback()
 def callback() -> None:
     """Python simple package manager."""
+
+
+@app.command()
+def init(name: str, description: str = "") -> None:
+    """Create initial project structure.
+
+    Args:
+        name: Project name
+        description: Project description
+    """
+    bootstrap_project(name, description or None)
 
 
 @app.command()
