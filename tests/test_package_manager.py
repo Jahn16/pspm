@@ -57,6 +57,9 @@ class DummyPyproject(BasePyproject):
         data = self._parser.load()
         return list(data["project"].get("optional-dependencies", {}).keys())
 
+    def is_installable(self) -> bool:
+        return True
+
 
 class DummyInstaller(BaseInstaller):
     def __init__(self, toml: BaseToml) -> None:
