@@ -23,7 +23,7 @@ spm add -g dev pytest
 - [ ] Init
 - [x] Install
 - [x] Add
-- [ ] Remove
+- [x] Remove
 - [ ] Run
 
 ## License
