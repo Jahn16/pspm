@@ -26,3 +26,7 @@ class CommandNotFoundError(CommandError):
         """
         self.message = f"Command {command} was not found"
         super().__init__(self.message)
+
+
+class CommandRunError(CommandError):
+    """Command failed to run."""
