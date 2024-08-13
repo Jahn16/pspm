@@ -50,7 +50,8 @@ class PackageManager:
             self._main_requirements_file,
             *self._get_group_requirements_files(),
         ])
-        self._installer.install(".", editable=True)
+        if self._pyproject.is_installable():
+            self._installer.install(".", editable=True)
 
     def manage_dependency(
         self,
