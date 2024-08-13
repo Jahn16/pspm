@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 if TYPE_CHECKING:
     from pspm.entities.installer import BaseInstaller
@@ -52,14 +52,20 @@ class PackageManager:
         ])
         self._installer.install(".", editable=True)
 
-    def add_dependency(self, package: str, group: str | None = None) -> None:
+    def manage_dependency(
+        self,
+        action: Literal["add", "remove"],
+        package: str,
+        group: str | None = None,
+    ) -> None:
         """Add dependency to pyproject.
 
         Args:
+            action: Action to take can be either add or remove
             package: Package to install
             group: Group to insert package
         """
-        self._pyproject.manage_dependency("add", package, group)
+        self._pyproject.manage_dependency(action, package, group)
         groups = self._pyproject.get_extra_groups()
         self._resolver.compile(self._main_requirements_file)
         for f, g in zip(self._get_group_requirements_files(), groups):
