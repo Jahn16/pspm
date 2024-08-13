@@ -45,6 +45,15 @@ class BasePyproject(abc.ABC):
         """Retrieve list of extra groups."""
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def is_installable(self) -> bool:
+        """Determine if project is installable.
+
+        Returns:
+            Whether the project is installable
+        """
+        raise NotImplementedError
+
 
 class Pyproject(BasePyproject):
     """Class for manipulating pyproject.toml file."""
@@ -101,3 +110,12 @@ class Pyproject(BasePyproject):
             {},
         )
         return list(optional_dependencies.keys())
+
+    def is_installable(self) -> bool:
+        """Determine if project is installable.
+
+        Returns:
+            Whether the project is installable
+        """
+        data = self._parser.load()
+        return data.get("build-system") is not None
