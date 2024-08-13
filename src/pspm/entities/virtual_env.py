@@ -21,16 +21,11 @@ class BaseVirtualEnv(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def activate(self) -> None:
-        """Activate virtualenv."""
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def run(self, command: str) -> None:
-        """Run command inside virtualenv.
+    def get_path_to_command_bin(self, command: str) -> None:
+        """Retrieve path to command bin.
 
         Args:
-            command: Command to run
+            command: Command to find bin
         """
         raise NotImplementedError
 
@@ -56,14 +51,10 @@ class VirtualEnv(BaseVirtualEnv):
         uv_path = get_uv_path()
         subprocess.run([uv_path, "venv", self._path], check=False)
 
-    def activate(self) -> None:
-        """Activate virtualenv."""
-        raise NotImplementedError
-
-    def run(self, command: str) -> None:
-        """Run command inside virtualenv.
+    def get_path_to_command_bin(self, command: str) -> None:
+        """Retrieve path to command bin.
 
         Args:
-            command: Command to run
+            command: Command to find bin
         """
         raise NotImplementedError
