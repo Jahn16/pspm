@@ -4,6 +4,7 @@ import abc
 import subprocess
 from pathlib import Path
 
+from pspm.errors.command import CommandNotFoundError
 from pspm.utils.bin_path import get_uv_path
 
 
@@ -21,7 +22,7 @@ class BaseVirtualEnv(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_path_to_command_bin(self, command: str) -> None:
+    def get_path_to_command_bin(self, command: str) -> str:
         """Retrieve path to command bin.
 
         Args:
@@ -51,10 +52,19 @@ class VirtualEnv(BaseVirtualEnv):
         uv_path = get_uv_path()
         subprocess.run([uv_path, "venv", self._path], check=False)
 
-    def get_path_to_command_bin(self, command: str) -> None:
+    def get_path_to_command_bin(self, command: str) -> str:
         """Retrieve path to command bin.
 
         Args:
-            command: Command to find bin
+            command: Command to find bin path
+
+        Raises:
+            CommandNotFoundError: If command bin was not found
+
+        Returns:
+            Path to command bin
         """
-        raise NotImplementedError
+        command_path = Path(self._path) / "bin" / command
+        if not command_path.exists():
+            raise CommandNotFoundError(command)
+        return str(command_path)
