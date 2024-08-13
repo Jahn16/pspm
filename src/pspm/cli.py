@@ -1,6 +1,6 @@
-"""main."""
+"""Module to define cli commands."""
 
-# ruff: noqa: FBT002
+# ruff: noqa: FBT002 B006
 from __future__ import annotations
 
 from typing import Annotated
@@ -13,6 +13,7 @@ from pspm.services.dependencies import (
     install_dependencies,
     manage_dependency,
 )
+from pspm.services.run import run_command
 
 app = typer.Typer()
 
@@ -63,3 +64,14 @@ def remove(
     """Remove package from pyproject, uninstall it and lock version."""
     rprint(f"Removing package {package}")
     manage_dependency("remove", package, group or None)
+
+
+@app.command()
+def run(command: str, arguments: list[str] = []) -> None:
+    """Run a command installed in virtual env.
+
+    Args:
+        command: Command to run
+        arguments: Arguments to pass to command
+    """
+    run_command(command, arguments)
