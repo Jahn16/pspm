@@ -108,10 +108,7 @@ class DummyVenv(BaseVirtualEnv):
     def create(self) -> None:
         self.created = True
 
-    def activate(self) -> None:
-        raise NotImplementedError
-
-    def run(self, command: str) -> None:
+    def get_path_to_command_bin(self, command: str) -> None:
         raise NotImplementedError
 
 
