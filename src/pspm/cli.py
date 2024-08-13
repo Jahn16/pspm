@@ -1,5 +1,6 @@
 """main."""
 
+# ruff: noqa: FBT002
 from __future__ import annotations
 
 from typing import Annotated
@@ -22,14 +23,21 @@ def callback() -> None:
 
 
 @app.command()
-def init(name: str, description: str = "") -> None:
+def init(
+    name: str,
+    description: str = "",
+    installable: Annotated[
+        bool, typer.Option("--installable/--not-installable")
+    ] = True,
+) -> None:
     """Create initial project structure.
 
     Args:
         name: Project name
         description: Project description
+        installable: Whether the project is instalabble
     """
-    bootstrap_project(name, description or None)
+    bootstrap_project(name, description or None, installable=installable)
 
 
 @app.command()
