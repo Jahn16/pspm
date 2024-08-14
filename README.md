@@ -28,11 +28,12 @@ spm add -g dev pytest
 
 ## Roadmap
 ### Comands
-- [ ] Init
+- [x] Init
 - [x] Install
 - [x] Add
 - [x] Remove
-- [ ] Run
+- [x] Run
+- [ ] Update
 
 ## License
 
