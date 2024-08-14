@@ -92,10 +92,17 @@ class DummyInstaller(BaseInstaller):
 class DummyResolver(BaseResolver):
     def __init__(self) -> None:
         self.output_files: list[str] = []
+        self.constraints_used: dict[str, str | None] = {}
 
-    def compile(self, output_file: str, group: str | None = None) -> None:
+    def compile(
+        self,
+        output_file: str,
+        group: str | None = None,
+        constraint_file: str | None = None,
+    ) -> None:
         output_file = f"requirements{'-' + group if group else ''}.lock"
         self.output_files.append(output_file)
+        self.constraints_used[output_file] = constraint_file
 
 
 class DummyVenv(BaseVirtualEnv):
@@ -223,10 +230,12 @@ def test_add_dependency_with_group(
 ) -> None:
     group = "test"
     package_manager.manage_dependency("add", package, group)
+    output_file = f"requirements-{group}.lock"
 
     assert package in pyproject.added_group_dependencies.get(group, [])
     assert package in installer.installed_packages
-    assert f"requirements-{group}.lock" in resolver.output_files
+    assert output_file in resolver.output_files
+    assert resolver.constraints_used[output_file] == "requirements.lock"
 
 
 def test_remove_dependency_with_group(
