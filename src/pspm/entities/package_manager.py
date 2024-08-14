@@ -70,11 +70,18 @@ class PackageManager:
         self.compile_requirements()
         self.install()
 
-    def compile_requirements(self) -> None:
-        """Compile all requirements files."""
+    def compile_requirements(self, *, upgrade: bool = False) -> None:
+        """Compile all requirements files.
+
+        Args:
+            upgrade: Whether to upgrade package versions
+        """
         groups = self._pyproject.get_extra_groups()
         self._resolver.compile(self._main_requirements_file)
-        for f, g in zip(self._get_group_requirements_files(), groups):
+        for file, group in zip(self._get_group_requirements_files(), groups):
             self._resolver.compile(
-                f, g, constraint_file=self._main_requirements_file
+                file,
+                group,
+                constraint_file=self._main_requirements_file,
+                upgrade=upgrade,
             )

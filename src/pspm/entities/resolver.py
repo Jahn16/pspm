@@ -26,6 +26,8 @@ class BaseResolver(abc.ABC):
         output_file: str,
         group: str | None = None,
         constraint_file: str | None = None,
+        *,
+        upgrade: bool = False,
     ) -> None:
         """Compiles requirements into a lock file.
 
@@ -33,6 +35,7 @@ class BaseResolver(abc.ABC):
             output_file: File to write output
             group: Group to include dependencies from
             constraint_file: Requirements file to contrain versions
+            upgrade: Whether to upgrade package versions
         """
         raise NotImplementedError
 
@@ -53,6 +56,8 @@ class UVResolver(BaseResolver):
         output_file: str,
         group: str | None = None,
         constraint_file: str | None = None,
+        *,
+        upgrade: bool = False,
     ) -> None:
         """Compiles requirements into a lock file.
 
@@ -60,6 +65,7 @@ class UVResolver(BaseResolver):
             output_file: File to write output
             group: Group to include dependencies from
             constraint_file: Requirements file to contrain versions
+            upgrade: Whether to upgrade package versions
         """
         subprocess.call([
             self._uv_path,
@@ -68,6 +74,7 @@ class UVResolver(BaseResolver):
             "-q",
             *(["--extra", group] if group else []),
             *(["--constraint", constraint_file] if constraint_file else []),
+            *(["--upgrade"] if upgrade else []),
             "-o",
             output_file,
             self.pyproject_path,
