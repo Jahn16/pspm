@@ -93,16 +93,20 @@ class DummyResolver(BaseResolver):
     def __init__(self) -> None:
         self.output_files: list[str] = []
         self.constraints_used: dict[str, str | None] = {}
+        self.upgraded = False
 
     def compile(
         self,
         output_file: str,
         group: str | None = None,
         constraint_file: str | None = None,
+        *,
+        upgrade: bool = False,
     ) -> None:
         output_file = f"requirements{'-' + group if group else ''}.lock"
         self.output_files.append(output_file)
         self.constraints_used[output_file] = constraint_file
+        self.upgraded = upgrade
 
 
 class DummyVenv(BaseVirtualEnv):
@@ -251,3 +255,10 @@ def test_remove_dependency_with_group(
     assert package in pyproject.uninstalled_group_dependencies.get(group, [])
     assert package not in installer.installed_packages
     assert f"requirements-{group}.lock" in resolver.output_files
+
+
+def test_compile_requirements_upgrade(
+    package_manager: PackageManager, resolver: DummyResolver
+) -> None:
+    package_manager.compile_requirements(upgrade=True)
+    assert resolver.upgraded == True
