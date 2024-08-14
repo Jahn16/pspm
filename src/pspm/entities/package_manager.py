@@ -77,7 +77,7 @@ class PackageManager:
             upgrade: Whether to upgrade package versions
         """
         groups = self._pyproject.get_extra_groups()
-        self._resolver.compile(self._main_requirements_file)
+        self._resolver.compile(self._main_requirements_file, upgrade=upgrade)
         for file, group in zip(self._get_group_requirements_files(), groups):
             self._resolver.compile(
                 file,
