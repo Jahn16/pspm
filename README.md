@@ -6,11 +6,12 @@ pspm is Python's Simplest Package Manager.
 
 <div align="center">
 
-![Docs](https://img.shields.io/badge/docs-mkdocs-blue?style=for-the-badge&link=https%3A%2F%2Fjahn16.github.io%2Fpspm%2F)
-![PyPI - Version](https://img.shields.io/pypi/v/pspm?logo=python&style=for-the-badge)
+[![Docs](https://img.shields.io/badge/docs-mkdocs-blue?style=for-the-badge)](https://jahn16.github.io/pspm/)
+[![PyPI - Version](https://img.shields.io/pypi/v/pspm?logo=python&style=for-the-badge)](https://pypi.org/project/pspm/)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Jahn16/pspm/test.yaml?label=tests&logo=github&style=for-the-badge)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json&style=for-the-badge)](https://github.com/astral-sh/ruff)
 </div>
+
 ## Installation
 
 I recommend using [pipx](https://pipx.pypa.io/stable/) to install pspm.
