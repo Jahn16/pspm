@@ -33,7 +33,8 @@ spm add -g dev pytest
 - [x] Add
 - [x] Remove
 - [x] Run
-- [ ] Update
+- [x] Update
+- [ ] Version
 
 ## License
 
