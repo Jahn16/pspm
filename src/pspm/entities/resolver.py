@@ -4,9 +4,8 @@ from __future__ import annotations
 
 import abc
 import subprocess
-from shutil import which
 
-import uv
+from pspm.utils.bin_path import get_uv_path
 
 
 class BaseResolver(abc.ABC):
@@ -46,10 +45,7 @@ class UVResolver(BaseResolver):
     def __init__(self, pyproject_path: str) -> None:
         """Initialize UV Compiler."""
         self.pyproject_path = pyproject_path
-        self._uv_path = which("uv") or uv.find_uv_bin()
-        self._uv_path = (
-            "/nix/store/2gv9l9nm38dhniynb3mm1s41yqxh4p2c-uv-0.2.27/bin/uv"
-        )
+        self._uv_path = get_uv_path()
 
     def compile(
         self,

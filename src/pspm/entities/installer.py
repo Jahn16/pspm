@@ -4,11 +4,9 @@ from __future__ import annotations
 
 import abc
 import subprocess
-from shutil import which
-
-import uv
 
 from pspm.errors.dependencies import InstallError
+from pspm.utils.bin_path import get_uv_path
 
 
 class BaseInstaller(abc.ABC):
@@ -51,7 +49,7 @@ class UVInstaller(BaseInstaller):
 
     def __init__(self) -> None:
         """Initialize UV Installer."""
-        self._uv_path = which("uv") or uv.find_uv_bin()
+        self._uv_path = get_uv_path()
 
     def install(self, package: str, *, editable: bool = False) -> None:
         """Install a package.
