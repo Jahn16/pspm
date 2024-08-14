@@ -8,7 +8,8 @@ from jinja2 import Environment, PackageLoader
 
 
 def _create_package_structure(name: str) -> None:
-    package_init = Path(f"src/{name}/__init__.py")
+    safe_name = name.lower().replace("-", "_")
+    package_init = Path(f"src/{safe_name}/__init__.py")
     package_init.parent.mkdir(parents=True, exist_ok=True)
     package_init.write_text("")
 
