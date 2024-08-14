@@ -5,7 +5,7 @@ from __future__ import annotations
 import abc
 import subprocess
 
-from pspm.errors.dependencies import InstallError
+from pspm.errors.dependencies import InstallError, SyncError
 from pspm.utils.bin_path import get_uv_path
 
 
@@ -87,5 +87,15 @@ class UVInstaller(BaseInstaller):
 
         Args:
             requirements_files: Path to files containing requirements
+
+        Raises:
+            SyncError: If cant sync dependencies
         """
-        subprocess.call([self._uv_path, "pip", "sync", *requirements_files])
+        retcode = subprocess.call([
+            self._uv_path,
+            "pip",
+            "sync",
+            *requirements_files,
+        ])
+        if retcode != 0:
+            raise SyncError

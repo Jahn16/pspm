@@ -5,6 +5,7 @@ from __future__ import annotations
 import abc
 import subprocess
 
+from pspm.errors.dependencies import ResolveError
 from pspm.utils.bin_path import get_uv_path
 
 
@@ -62,8 +63,11 @@ class UVResolver(BaseResolver):
             group: Group to include dependencies from
             constraint_file: Requirements file to contrain versions
             upgrade: Whether to upgrade package versions
+
+        Raises:
+            ResolveError: If cant resolve dependencies
         """
-        subprocess.call([
+        retcode = subprocess.call([
             self._uv_path,
             "pip",
             "compile",
@@ -75,3 +79,5 @@ class UVResolver(BaseResolver):
             output_file,
             self.pyproject_path,
         ])
+        if retcode != 0:
+            raise ResolveError
