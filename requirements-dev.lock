@@ -20,6 +20,8 @@ pygments==2.18.0
     # via rich
 pytest==8.3.2
     # via pspm (pyproject.toml)
+python-dotenv==1.0.1
+    # via pspm (pyproject.toml)
 rich==13.7.1
     # via typer
 shellingham==1.5.4
