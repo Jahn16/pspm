@@ -1,5 +1,11 @@
 name: Docs
-on: push
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "mkdocs.yml"
+      - "docs/**"
 permissions:
   contents: write
 jobs:
