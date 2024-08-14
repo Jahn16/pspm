@@ -35,6 +35,9 @@ spm = "pspm.cli:app"
 dev = [
     "pytest",
 ]
+docs = [
+    "mkdocs",
+]
 
 [project.urls]
 Homepage = "https://github.com/Jahn16/pspm"
