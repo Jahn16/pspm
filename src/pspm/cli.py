@@ -12,6 +12,7 @@ from pspm.services.bootstrap import bootstrap_project
 from pspm.services.dependencies import (
     install_dependencies,
     manage_dependency,
+    upgrade_dependencies,
 )
 from pspm.services.run import run_command
 
@@ -75,3 +76,9 @@ def run(command: str, arguments: list[str] = []) -> None:
         arguments: Arguments to pass to command
     """
     run_command(command, arguments)
+
+
+@app.command()
+def update() -> None:
+    """Update all dependencies and install."""
+    upgrade_dependencies()

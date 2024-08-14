@@ -58,3 +58,10 @@ def manage_dependency(
     """
     package_manager = _get_package_manager()
     package_manager.manage_dependency(action, package, group)
+
+
+def upgrade_dependencies() -> None:
+    """Update all dependencies and install."""
+    package_manager = _get_package_manager()
+    package_manager.compile_requirements(upgrade=True)
+    package_manager.install()
