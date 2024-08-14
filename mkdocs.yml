@@ -1,0 +1,4 @@
+site_name: PSPM
+theme:
+  name: material
+  favicon:  img/favicon.ico
