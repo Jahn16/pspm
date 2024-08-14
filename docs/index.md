@@ -11,7 +11,7 @@ The recommend installation method is by using [pipx](https://pipx.pypa.io/stable
 ```bash
 pipx install pspm
 ```
-# Shell Completion
+## Shell Completion
 
 pspm supports generating completion scripts for Bash, Fish, and Zsh.
 
