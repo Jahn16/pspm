@@ -21,12 +21,18 @@ class BaseResolver(abc.ABC):
         self.pyproject_path = pyproject_path
 
     @abc.abstractmethod
-    def compile(self, output_file: str, group: str | None = None) -> None:
+    def compile(
+        self,
+        output_file: str,
+        group: str | None = None,
+        constraint_file: str | None = None,
+    ) -> None:
         """Compiles requirements into a lock file.
 
         Args:
             output_file: File to write output
             group: Group to include dependencies from
+            constraint_file: Requirements file to contrain versions
         """
         raise NotImplementedError
 
@@ -38,21 +44,30 @@ class UVResolver(BaseResolver):
         """Initialize UV Compiler."""
         self.pyproject_path = pyproject_path
         self._uv_path = which("uv") or uv.find_uv_bin()
+        self._uv_path = (
+            "/nix/store/2gv9l9nm38dhniynb3mm1s41yqxh4p2c-uv-0.2.27/bin/uv"
+        )
 
-    def compile(self, output_file: str, group: str | None = None) -> None:
+    def compile(
+        self,
+        output_file: str,
+        group: str | None = None,
+        constraint_file: str | None = None,
+    ) -> None:
         """Compiles requirements into a lock file.
 
         Args:
             output_file: File to write output
             group: Group to include dependencies from
+            constraint_file: Requirements file to contrain versions
         """
-        extra_arguments = ["--extra", group] if group else []
         subprocess.call([
             self._uv_path,
             "pip",
             "compile",
             "-q",
-            *extra_arguments,
+            *(["--extra", group] if group else []),
+            *(["--constraint", constraint_file] if constraint_file else []),
             "-o",
             output_file,
             self.pyproject_path,
