@@ -1,5 +1,6 @@
 """Module to interact with command runner."""
 
+from dotenv import load_dotenv
 from rich import print as rprint
 
 from pspm.entities.runner import Runner
@@ -13,12 +14,13 @@ def _get_runner() -> Runner:
 
 
 def run_command(command: str, arguments: list[str]) -> None:
-    """Run a command.
+    """Load dotenv and run a command.
 
     Args:
         command: Command to run
         arguments: Arguments to pass to command
     """
+    load_dotenv()
     runner = _get_runner()
     try:
         runner.run(command, arguments)
