@@ -67,8 +67,14 @@ class PackageManager:
             group: Group to insert package
         """
         self._pyproject.manage_dependency(action, package, group)
+        self.compile_requirements()
+        self.install()
+
+    def compile_requirements(self) -> None:
+        """Compile all requirements files."""
         groups = self._pyproject.get_extra_groups()
         self._resolver.compile(self._main_requirements_file)
         for f, g in zip(self._get_group_requirements_files(), groups):
-            self._resolver.compile(f, g)
-        self.install()
+            self._resolver.compile(
+                f, g, constraint_file=self._main_requirements_file
+            )
