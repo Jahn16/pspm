@@ -10,7 +10,8 @@ spm init my-project
 The following structure will be created:
 
 ```
-.
+my-project/
+├── .gitignore
 ├── pyproject.toml
 ├── README.md
 └── src
