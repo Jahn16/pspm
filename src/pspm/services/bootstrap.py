@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from jinja2 import Environment, PackageLoader
+from rich import print as rprint
 
 
 def _create_package_structure(name: str) -> None:
@@ -40,3 +41,7 @@ def bootstrap_project(
         file_path = path / file_name
         file_path.write_text(result, encoding="utf-8")
     _create_package_structure(name)
+    rprint(
+        f"Initialized project [blue]{name}[/blue] "
+        + (f"in [blue]{path.name}[/blue]" if path.name else "")
+    )
