@@ -13,8 +13,8 @@ from rich import print as rprint
 from pspm.services.bootstrap import bootstrap_project
 from pspm.services.dependencies import (
     install_dependencies,
+    lock_dependencies,
     manage_dependency,
-    upgrade_dependencies,
 )
 from pspm.services.run import run_command
 
@@ -96,6 +96,6 @@ def run(command: str, arguments: list[str] = []) -> None:
 
 
 @app.command()
-def update() -> None:
-    """Update all dependencies and install."""
-    upgrade_dependencies()
+def lock(update: bool = False) -> None:
+    """Lock the dependencies without installing."""
+    lock_dependencies(update=update)
