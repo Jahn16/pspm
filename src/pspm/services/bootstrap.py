@@ -15,18 +15,20 @@ def _create_package_structure(name: str) -> None:
 
 
 def bootstrap_project(
-    name: str, description: str | None, *, installable: bool
+    path: Path, name: str | None, description: str | None, *, installable: bool
 ) -> None:
     """Create initial project structure.
 
     Args:
+        path: Path to project
         name: Project name
         description: Project description
         installable: Whether the project is installable
     """
-    if description is None:
-        description = "Describe your project here"
+    name = name or path.absolute().name
+    description = description or "Describe your project here"
 
+    path.mkdir(exist_ok=True)
     env = Environment(loader=PackageLoader("pspm"), autoescape=True)
     template_names = env.list_templates()
     for template_name in template_names:
@@ -35,5 +37,6 @@ def bootstrap_project(
             name=name, description=description, installable=installable
         )
         file_name = template_name.replace(".j2", "")
-        Path(file_name).write_text(result, encoding="utf-8")
+        file_path = path / file_name
+        file_path.write_text(result, encoding="utf-8")
     _create_package_structure(name)

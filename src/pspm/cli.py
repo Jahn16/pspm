@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import importlib.metadata
+from pathlib import Path
 from typing import Annotated, Optional
 
 import typer
@@ -38,8 +39,9 @@ def callback(
 
 @app.command()
 def init(
-    name: str,
-    description: str = "",
+    path: Annotated[Path, typer.Argument(file_okay=False)] = Path(),
+    name: Optional[str] = None,
+    description: Optional[str] = None,
     installable: Annotated[
         bool, typer.Option("--installable/--not-installable")
     ] = True,
@@ -47,11 +49,12 @@ def init(
     """Create initial project structure.
 
     Args:
+        path: Where to place the project
         name: Project name
         description: Project description
         installable: Whether the project is instalabble
     """
-    bootstrap_project(name, description or None, installable=installable)
+    bootstrap_project(path, name, description, installable=installable)
 
 
 @app.command()
