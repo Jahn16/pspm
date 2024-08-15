@@ -63,16 +63,18 @@ def install() -> None:
 
 @app.command()
 def add(
-    package: str, group: Annotated[str, typer.Option("--group", "-g")] = ""
+    package: str,
+    group: Annotated[Optional[str], typer.Option("--group", "-g")] = None,
 ) -> None:
     """Add package to pyproject, install it and lock version."""
     rprint(f"Adding package {package}")
-    manage_dependency("add", package, group or None)
+    manage_dependency("add", package, group)
 
 
 @app.command()
 def remove(
-    package: str, group: Annotated[str, typer.Option("--group", "-g")] = ""
+    package: str,
+    group: Annotated[Optional[str], typer.Option("--group", "-g")] = None,
 ) -> None:
     """Remove package from pyproject, uninstall it and lock version."""
     rprint(f"Removing package {package}")
