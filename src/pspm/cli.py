@@ -1,9 +1,10 @@
 """Module to define cli commands."""
 
-# ruff: noqa: FBT002 B006
+# ruff: noqa: FBT001 FBT002 B006 UP007
 from __future__ import annotations
 
-from typing import Annotated
+import importlib.metadata
+from typing import Annotated, Optional
 
 import typer
 from rich import print as rprint
@@ -16,11 +17,22 @@ from pspm.services.dependencies import (
 )
 from pspm.services.run import run_command
 
-app = typer.Typer()
+app = typer.Typer(no_args_is_help=True, invoke_without_command=True)
+
+
+def _version_callback(value: bool) -> None:
+    if value:
+        version = importlib.metadata.version("pspm")
+        rprint(version)
 
 
 @app.callback()
-def callback() -> None:
+def callback(
+    version: Annotated[  # noqa: ARG001
+        Optional[bool],
+        typer.Option("--version", callback=_version_callback, is_eager=True),
+    ] = None,
+) -> None:
     """Python simple package manager."""
 
 
