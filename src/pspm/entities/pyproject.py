@@ -54,6 +54,40 @@ class BasePyproject(abc.ABC):
         """
         raise NotImplementedError
 
+    @property
+    @abc.abstractmethod
+    def version(self) -> str:
+        """Retrieve project version.
+
+        Returns:
+            Project version.
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def change_version(self, version: str) -> str:
+        """Change project version.
+
+        Args:
+            version: Version to change to
+
+        Returns:
+            Updated version
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def bump_version(self, rule: Literal["major", "minor", "patch"]) -> str:
+        """Bump project version.
+
+        Args:
+            rule: Rule to apply when bumping
+
+        Returns:
+            Updated version
+        """
+        raise NotImplementedError
+
 
 class Pyproject(BasePyproject):
     """Class for manipulating pyproject.toml file."""
@@ -119,3 +153,36 @@ class Pyproject(BasePyproject):
         """
         data = self._parser.load()
         return data.get("build-system") is not None
+
+    @property
+    def version(self) -> str:
+        """Retrieve project version.
+
+        Returns:
+            Project version.
+        """
+        return "0.0.0"
+
+    @abc.abstractmethod
+    def change_version(self, version: str) -> str:
+        """Change project version.
+
+        Args:
+            version: Version to change to
+
+        Returns:
+            Updated version
+        """
+        return "0.0.0"
+
+    @abc.abstractmethod
+    def bump_version(self, rule: Literal["major", "minor", "patch"]) -> str:
+        """Bump project version.
+
+        Args:
+            rule: Rule to apply when bumping
+
+        Returns:
+            Updated version
+        """
+        return "0.0.0"
