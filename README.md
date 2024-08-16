@@ -34,7 +34,7 @@ spm add -g dev pytest
 - [x] Remove
 - [x] Run
 - [x] Lock
-- [ ] Version
+- [x] Version
 
 ## License
 
