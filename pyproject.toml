@@ -40,7 +40,9 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/Jahn16/pspm"
+Repository = "https://github.com/Jahn16/pspm"
+Documentation = "https://jahn16.github.io/pspm"
+Releases = "https://jahn16.github.io/pspm/releases"
 
 [build-system]
 requires = [
