@@ -28,10 +28,10 @@ class Runner:
             CommandRunError: If command fails
         """
         try:
-            self._virtual_env.get_path_to_command_bin(command)
+            command_path = self._virtual_env.get_path_to_command_bin(command)
         except CommandNotFoundError as e:
             raise CommandRunError(command, str(e)) from e
 
-        retcode = subprocess.call([command, *arguments], shell=False)
+        retcode = subprocess.call([command_path, *arguments], shell=False)
         if retcode != 0:
             raise CommandRunError(command)
