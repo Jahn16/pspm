@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import importlib.metadata
+from enum import Enum
 from pathlib import Path
 from typing import Annotated, Optional
 
@@ -12,6 +13,8 @@ from rich import print as rprint
 
 from pspm.services.bootstrap import bootstrap_project
 from pspm.services.dependencies import (
+    change_version,
+    get_version,
     install_dependencies,
     lock_dependencies,
     manage_dependency,
@@ -102,3 +105,32 @@ def run(
 def lock(update: bool = False) -> None:
     """Lock the dependencies without installing."""
     lock_dependencies(update=update)
+
+
+class BumpRules(str, Enum):  # noqa: D101
+    major = "major"
+    minor = "minor"
+    patch = "patch"
+
+
+@app.command()
+def version(
+    new_version: Annotated[Optional[str], typer.Argument()] = None,
+    bump: Annotated[
+        Optional[BumpRules],
+        typer.Option("-b", "--bump"),
+    ] = None,
+) -> None:
+    """Checks or update project version.
+
+    Args:
+        new_version: Version to change to
+        bump: Bump rule to apply change version
+    """
+    if new_version:
+        version = change_version(new_version)
+    elif bump:
+        version = change_version(bump_rule=bump.value)
+    else:
+        version = get_version()
+    rprint(version)

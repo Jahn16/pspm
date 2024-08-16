@@ -65,3 +65,38 @@ def lock_dependencies(*, update: bool = False) -> None:
     package_manager = _get_package_manager()
     package_manager.compile_requirements(upgrade=update)
     package_manager.install()
+
+
+def get_version() -> str:
+    """Retrive pyproject version.
+
+    Returns:
+        Project version.
+    """
+    pyproject = _get_pyproject()
+    return pyproject.version
+
+
+def change_version(
+    new_version: str | None = None,
+    bump_rule: Literal["major", "minor", "patch"] | None = None,
+) -> str:
+    """Change project version.
+
+    Args:
+        new_version: Version to change to
+        bump_rule: Rule to change version
+
+    Raises:
+        ValueError: If neither argument were provided
+
+    Returns:
+        Updated version
+    """
+    pyproject = _get_pyproject()
+    if new_version:
+        return pyproject.change_version(new_version)
+    if bump_rule:
+        return pyproject.bump_version(bump_rule)
+    error_message = "Missing action to change version"
+    raise ValueError(error_message)
