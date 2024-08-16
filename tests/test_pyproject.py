@@ -130,7 +130,7 @@ def test_version_change(pyproject: Pyproject) -> None:
 
 @pytest.mark.parametrize(
     "rule,expected",
-    [("major", "2.0.0"), ("minor", "1.2.0"), ("patch", "1.0.2")],
+    [("major", "2.0.0"), ("minor", "1.2.0"), ("patch", "1.1.2")],
 )
 def test_version_bump(pyproject: Pyproject, rule: str, expected: str) -> None:
     pyproject.bump_version(rule)  # type: ignore
