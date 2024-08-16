@@ -25,7 +25,7 @@ def requirements() -> dict[str, list[str]]:
 
 @pytest.fixture()
 def version() -> str:
-    return "1.0.0"
+    return "1.1.1"
 
 
 @pytest.fixture
@@ -130,7 +130,7 @@ def test_version_change(pyproject: Pyproject) -> None:
 
 @pytest.mark.parametrize(
     "rule,expected",
-    [("major", "2.0.0"), ("minor", "1.1.0"), ("patch", "1.0.1")],
+    [("major", "2.0.0"), ("minor", "1.2.0"), ("patch", "1.0.2")],
 )
 def test_version_bump(pyproject: Pyproject, rule: str, expected: str) -> None:
     pyproject.bump_version(rule)  # type: ignore
