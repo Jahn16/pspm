@@ -16,8 +16,10 @@ def _get_runner() -> Runner:
 
 
 def load_dotenv() -> None:
-    """Load dotenv vars."""
+    """Load env vars from dotenv file."""
     path = Path(".env")
+    if not path.exists():
+        return
     text = path.read_text()
     lines = text.rsplit()
     for line in lines:
