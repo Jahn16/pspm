@@ -62,7 +62,7 @@ class VirtualEnv(BaseVirtualEnv):
             CommandNotFoundError: If command bin was not found
 
         Returns:
-            Path to command bin
+            Absolute path to command bin
         """
         command_path = Path(self._path) / "bin" / command
         if not command_path.exists():
@@ -71,4 +71,4 @@ class VirtualEnv(BaseVirtualEnv):
                 f"in {command_path.parent.absolute()}"
             )
             raise CommandNotFoundError(command, error_message)
-        return str(command_path)
+        return str(command_path.absolute())
