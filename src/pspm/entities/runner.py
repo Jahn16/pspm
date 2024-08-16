@@ -30,7 +30,7 @@ class Runner:
         try:
             self._virtual_env.get_path_to_command_bin(command)
         except CommandNotFoundError as e:
-            raise CommandRunError(command) from e
+            raise CommandRunError(command, str(e)) from e
 
         retcode = subprocess.call([command, *arguments], shell=False)
         if retcode != 0:
