@@ -189,8 +189,10 @@ class Pyproject(BasePyproject):
         Returns:
             Updated version
         """
-        parts = [int(p) for p in self.version.split(".")]
-        part_to_value = dict(zip(["major", "minor", "patch"], parts))
-        part_to_value[rule] += 1
-        new_version = ".".join([str(p) for p in part_to_value.values()])
+        rule_position = {"major": 0, "minor": 1, "patch": 2}[rule]
+        parts = [int(p) for p in self.version.split(".", 3)]
+        parts[rule_position] += 1
+        for i in range(rule_position + 1, len(parts), 1):
+            parts[i] = 0
+        new_version = ".".join([str(p) for p in parts])
         return self.change_version(new_version)
