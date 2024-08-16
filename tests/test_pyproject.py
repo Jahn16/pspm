@@ -23,11 +23,17 @@ def requirements() -> dict[str, list[str]]:
     return {"main": ["foo", "bar"], "dev": ["developing"], "test": ["testing"]}
 
 
+@pytest.fixture()
+def version() -> str:
+    return "1.0.0"
+
+
 @pytest.fixture
-def data(requirements: dict[str, list[str]]) -> dict[str, Any]:
+def data(version: str, requirements: dict[str, list[str]]) -> dict[str, Any]:
     return {
         "project": {
             "name": "test",
+            "version": version,
             "dependencies": requirements["main"],
             "optional-dependencies": {
                 "dev": requirements["dev"],
@@ -110,3 +116,22 @@ def test_get_extra_groups(pyproject: Pyproject, toml_parser: BaseToml) -> None:
     data = toml_parser.load()
     result = pyproject.get_extra_groups()
     assert result == ["dev", "test"]
+
+
+def test_version_property(pyproject: Pyproject, version: str) -> None:
+    assert pyproject.version == version
+
+
+def test_version_change(pyproject: Pyproject) -> None:
+    new_version = "2.3.4"
+    pyproject.change_version(new_version)
+    assert pyproject.version == new_version
+
+
+@pytest.mark.parametrize(
+    "rule,expected",
+    [("major", "2.0.0"), ("minor", "1.1.0"), ("minor", "1.0.1")],
+)
+def test_version_bump(pyproject: Pyproject, rule: str, expected: str) -> None:
+    pyproject.bump_version(rule)  # type: ignore
+    assert pyproject.version == expected
