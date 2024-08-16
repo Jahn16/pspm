@@ -85,14 +85,17 @@ def remove(
 
 
 @app.command()
-def run(command: str, arguments: list[str] = []) -> None:
+def run(
+    command: str,
+    arguments: Annotated[Optional[list[str]], typer.Argument()] = None,
+) -> None:
     """Run a command installed in virtual env.
 
     Args:
         command: Command to run
         arguments: Arguments to pass to command
     """
-    run_command(command, arguments)
+    run_command(command, arguments or [])
 
 
 @app.command()
