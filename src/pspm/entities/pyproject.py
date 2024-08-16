@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import abc
-from typing import TYPE_CHECKING, Any, Literal
+from typing import TYPE_CHECKING, Any, Literal, cast
 
 if TYPE_CHECKING:
     from pspm.entities.toml import BaseToml
@@ -15,14 +15,6 @@ class BasePyproject(abc.ABC):
     Attributes:
         toml_parser: Parser to be used for parsing TOML
     """
-
-    def __init__(self, toml_parser: BaseToml) -> None:
-        """Iniatilize BasePyproject.
-
-        Args:
-            toml_parser: Parser to be used for parsing TOML
-        """
-        self._parser = toml_parser
 
     @abc.abstractmethod
     def manage_dependency(
@@ -65,11 +57,11 @@ class BasePyproject(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def change_version(self, version: str) -> str:
+    def change_version(self, new_version: str) -> str:
         """Change project version.
 
         Args:
-            version: Version to change to
+            new_version: Version to change to
 
         Returns:
             Updated version
@@ -91,6 +83,15 @@ class BasePyproject(abc.ABC):
 
 class Pyproject(BasePyproject):
     """Class for manipulating pyproject.toml file."""
+
+    def __init__(self, toml_parser: BaseToml) -> None:
+        """Iniatilize Pyproject.
+
+        Args:
+            toml_parser: Parser to be used for parsing TOML
+        """
+        self._parser = toml_parser
+        self._data = toml_parser.load()
 
     def manage_dependency(
         self,
@@ -161,21 +162,24 @@ class Pyproject(BasePyproject):
         Returns:
             Project version.
         """
-        return "0.0.0"
+        return cast(str, self._data.get("project", {}).get("version", "0.0.0"))
 
-    @abc.abstractmethod
-    def change_version(self, version: str) -> str:
+    def change_version(self, new_version: str) -> str:
         """Change project version.
 
         Args:
-            version: Version to change to
+            new_version: Version to change to
 
         Returns:
             Updated version
         """
-        return "0.0.0"
+        data = self._parser.load()
+        project: dict[str, Any] = data.get("project", {})
+        project["version"] = new_version
+        data["project"] = project
+        self._parser.dump(data)
+        return new_version
 
-    @abc.abstractmethod
     def bump_version(self, rule: Literal["major", "minor", "patch"]) -> str:
         """Bump project version.
 
@@ -185,4 +189,8 @@ class Pyproject(BasePyproject):
         Returns:
             Updated version
         """
-        return "0.0.0"
+        parts = [int(p) for p in self.version.split(".")]
+        d = dict(zip(["major", "minor", "patch"], parts))
+        d[rule] += 1
+        new_version = ".".join([str(p) for p in d.values()])
+        return self.change_version(new_version)
