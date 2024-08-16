@@ -60,6 +60,16 @@ class DummyPyproject(BasePyproject):
     def is_installable(self) -> bool:
         return True
 
+    @property
+    def version(self) -> str:
+        return "0.0.0"
+
+    def change_version(self, new_version: str) -> str:
+        return "0.0.0"
+
+    def bump_version(self, rule: str) -> str:
+        return "0.0.0"
+
 
 class DummyInstaller(BaseInstaller):
     def __init__(self, toml: BaseToml) -> None:
