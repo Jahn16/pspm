@@ -32,10 +32,6 @@ pygments==2.18.0
     #   rich
 pytest==8.3.2
     # via pspm (pyproject.toml)
-python-dotenv==1.0.1
-    # via
-    #   -c requirements.lock
-    #   pspm (pyproject.toml)
 rich==13.7.1
     # via
     #   -c requirements.lock
