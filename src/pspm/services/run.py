@@ -1,6 +1,8 @@
 """Module to interact with command runner."""
 
-from dotenv import load_dotenv
+from os import environ
+from pathlib import Path
+
 from rich import print as rprint
 
 from pspm.entities.runner import Runner
@@ -11,6 +13,18 @@ from pspm.errors.command import CommandRunError
 def _get_runner() -> Runner:
     virtual_env = VirtualEnv()
     return Runner(virtual_env)
+
+
+def load_dotenv() -> None:
+    """Load env vars from dotenv file."""
+    path = Path(".env")
+    if not path.exists():
+        return
+    text = path.read_text()
+    lines = text.rsplit()
+    for line in lines:
+        key, value = line.split("=")
+        environ[key] = value
 
 
 def run_command(command: str, arguments: list[str]) -> None:

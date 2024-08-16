@@ -72,10 +72,6 @@ pymdown-extensions==10.9
     # via mkdocs-material
 python-dateutil==2.9.0.post0
     # via ghp-import
-python-dotenv==1.0.1
-    # via
-    #   -c requirements.lock
-    #   pspm (pyproject.toml)
 pyyaml==6.0.2
     # via
     #   mkdocs

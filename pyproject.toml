@@ -7,7 +7,6 @@ dependencies = [
     "tomli-w",
     "uv",
     "jinja2",
-    "python-dotenv",
 ]
 requires-python = ">=3.9"
 authors = [
