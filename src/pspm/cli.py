@@ -65,6 +65,9 @@ def install() -> None:
     """Install all dependencies and the package itself."""
     rprint("Installing project")
     install_dependencies()
+    rprint(
+        "\n:sparkles: Installed [blue]current package[/blue] and dependencies"
+    )
 
 
 @app.command()
@@ -107,6 +110,7 @@ def run(
 def lock(update: bool = False) -> None:
     """Lock the dependencies without installing."""
     lock_dependencies(update=update)
+    rprint("\n:lock: Locked dependencies")
 
 
 class BumpRules(str, Enum):  # noqa: D101
