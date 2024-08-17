@@ -75,6 +75,7 @@ def add(
     """Add package to pyproject, install it and lock version."""
     rprint(f"Adding package {package}")
     manage_dependency("add", package, group)
+    rprint(f"\n:sparkles: Added package [blue]{package}[/blue]")
 
 
 @app.command()
@@ -85,6 +86,7 @@ def remove(
     """Remove package from pyproject, uninstall it and lock version."""
     rprint(f"Removing package {package}")
     manage_dependency("remove", package, group or None)
+    rprint(f"\n:sparkles: Removed package [blue]{package}[/blue]")
 
 
 @app.command()
