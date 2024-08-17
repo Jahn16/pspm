@@ -37,8 +37,8 @@ spm add -g dev mypy
 
 ## Run Command
 
-!!! warning
-    This will only work for binaries installed inside the virtualenv, like your project script
+> [!WARNING]
+> This will only work for binaries installed inside the virtualenv, like your project script
 To run commands using `pspm` use the `spm run` command. This will automatically read your `.env` file
 
 ```
