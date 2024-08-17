@@ -20,9 +20,9 @@ tomli==2.0.1
     # via pspm (pyproject.toml)
 tomli-w==1.0.0
     # via pspm (pyproject.toml)
-typer==0.12.3
+typer==0.12.4
     # via pspm (pyproject.toml)
 typing-extensions==4.12.2
     # via typer
-uv==0.2.36
+uv==0.2.37
     # via pspm (pyproject.toml)
