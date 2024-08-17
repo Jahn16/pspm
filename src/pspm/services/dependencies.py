@@ -64,7 +64,6 @@ def lock_dependencies(*, update: bool = False) -> None:
     """Lock dependencies."""
     package_manager = _get_package_manager()
     package_manager.compile_requirements(upgrade=update)
-    package_manager.install()
 
 
 def get_version() -> str:

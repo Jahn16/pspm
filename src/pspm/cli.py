@@ -110,7 +110,15 @@ def run(
 def lock(update: bool = False) -> None:
     """Lock the dependencies without installing."""
     lock_dependencies(update=update)
-    rprint("\n:lock: Locked dependencies")
+    rprint(":lock: Locked dependencies")
+
+
+@app.command()
+def upgrade() -> None:
+    """Upgrade dependencies to latest version."""
+    lock_dependencies(update=True)
+    install_dependencies()
+    rprint("\n:sparkles: Upgraded dependencies")
 
 
 class BumpRules(str, Enum):  # noqa: D101
