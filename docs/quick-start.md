@@ -1,7 +1,7 @@
 # Quick Start
 ## Project Setup
 
-To create a new project use the `spm init` command
+To create a new project use the [`init`](commands/init.md) command
 
 ```bash
 spm init my-project
@@ -23,7 +23,7 @@ my-project/
 
 ### Add
 
-To add dependencies use the `spm add` command
+To add dependencies use the [`add`](commands/add.md) command
 
 ```bash
 spm add pandas
@@ -39,7 +39,8 @@ spm add -g dev mypy
 
 > [!WARNING]
 > This will only work for binaries installed inside the virtualenv, like your project script
-To run commands using `pspm` use the `spm run` command. This will automatically read your `.env` file
+
+To run commands using `pspm` use the [`run`](commands/run.md) command. This will automatically read your `.env` file
 
 ```
 spm run my-project
@@ -47,7 +48,7 @@ spm run my-project
 
 ## Existing Project
 
-For installing dependencies from a existing project use the `spm install` command. This will install all the dependencies and the package itself
+For installing dependencies from a existing project use the [`install`](commands/install.md) command. This will install all the dependencies and the package itself
 
 ```bash
 spm install
