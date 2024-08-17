@@ -6,6 +6,4 @@ theme:
   icon:
     repo: fontawesome/brands/github
 markdown_extensions:
-  - admonition
-  - pymdownx.details
-  - pymdownx.superfences
+  - markdown_gfm_admonition
