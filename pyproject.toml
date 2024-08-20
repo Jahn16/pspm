@@ -1,9 +1,9 @@
 [project]
 name = "pspm"
-version = "1.7.2"
+version = "1.7.3"
 dependencies = [
     "typer",
-    'tomli; python_version < "3.11"',
+    "tomli; python_version < \"3.11\"",
     "tomli-w",
     "uv",
     "jinja2",
