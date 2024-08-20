@@ -40,10 +40,6 @@ shellingham==1.5.4
     # via
     #   -c requirements.lock
     #   typer
-tomli==2.0.1
-    # via
-    #   -c requirements.lock
-    #   pspm (pyproject.toml)
 tomli-w==1.0.0
     # via
     #   -c requirements.lock

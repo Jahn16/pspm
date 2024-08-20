@@ -16,8 +16,6 @@ rich==13.7.1
     # via typer
 shellingham==1.5.4
     # via typer
-tomli==2.0.1
-    # via pspm (pyproject.toml)
 tomli-w==1.0.0
     # via pspm (pyproject.toml)
 typer==0.12.4
