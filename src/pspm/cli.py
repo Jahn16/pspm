@@ -15,9 +15,9 @@ from pspm.services.bootstrap import bootstrap_project
 from pspm.services.dependencies import (
     change_version,
     get_version,
-    install_dependencies,
     lock_dependencies,
     manage_dependency,
+    sync_dependencies,
 )
 from pspm.services.run import run_command
 
@@ -64,7 +64,7 @@ def init(
 def sync() -> None:
     """Sync environment with all dependencies and the package itself."""
     rprint("Installing project")
-    install_dependencies()
+    sync_dependencies()
     rprint(
         "\n:sparkles: Installed [blue]current package[/blue] and dependencies"
     )
@@ -117,7 +117,7 @@ def lock(update: bool = False) -> None:
 def upgrade() -> None:
     """Upgrade dependencies to latest version."""
     lock_dependencies(update=True)
-    install_dependencies()
+    sync_dependencies()
     rprint("\n:sparkles: Upgraded dependencies")
 
 
