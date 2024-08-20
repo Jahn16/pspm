@@ -48,10 +48,10 @@ spm run my-project
 
 ## Existing Project
 
-For installing dependencies from a existing project use the [`install`](commands/install.md) command. This will install all the dependencies and the package itself
+For installing dependencies from a existing project use the [`sync`](commands/sync.md) command. This will install all the dependencies and the package itself
 
 ```bash
-spm install
+spm sync
 ```
 
 

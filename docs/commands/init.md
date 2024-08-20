@@ -10,7 +10,7 @@ Create initial project structure. Files created: `pyproject.toml`, `README.md`, 
 
 - `--name <NAME>`: Project name (defaults to current path basename)
 - `--description <DESCRIPTION>`: Project description
-- `--not-installable`: If passed pyproject will be created with no `[build-system]` section and the project will not be installed with [`install`](install.md)
+- `--not-installable`: If passed pyproject will be created with no `[build-system]` section and the project will not be installed with [`sync`](sync.md)
 
 ## Examples
 
