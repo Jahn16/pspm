@@ -6,6 +6,7 @@ dependencies = [
     "tomli; python_version < \"3.11\"",
     "tomli-w",
     "uv",
+    "copier",
 ]
 requires-python = ">=3.9"
 authors = [
