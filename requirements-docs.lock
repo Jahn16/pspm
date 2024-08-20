@@ -19,8 +19,6 @@ idna==3.7
     # via requests
 jinja2==3.1.4
     # via
-    #   -c requirements.lock
-    #   pspm (pyproject.toml)
     #   mkdocs
     #   mkdocs-material
 markdown==3.7
@@ -37,7 +35,6 @@ markdown-it-py==3.0.0
     #   rich
 markupsafe==2.1.5
     # via
-    #   -c requirements.lock
     #   jinja2
     #   mkdocs
 mdurl==0.1.2

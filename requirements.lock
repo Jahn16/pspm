@@ -2,12 +2,8 @@
 #    uv pip compile -o requirements.lock /home/jahn/Codes/pspm/pyproject.toml
 click==8.1.7
     # via typer
-jinja2==3.1.4
-    # via pspm (pyproject.toml)
 markdown-it-py==3.0.0
     # via rich
-markupsafe==2.1.5
-    # via jinja2
 mdurl==0.1.2
     # via markdown-it-py
 pygments==2.18.0
