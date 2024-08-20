@@ -1,4 +1,4 @@
-# `install`
+# `sync`
 
 > [!WARNING]
 > This command will uninstall all dependencies not specified in the pyproject.toml file
