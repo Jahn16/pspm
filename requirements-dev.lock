@@ -52,7 +52,3 @@ typing-extensions==4.12.2
     # via
     #   -c requirements.lock
     #   typer
-uv==0.2.37
-    # via
-    #   -c requirements.lock
-    #   pspm (pyproject.toml)

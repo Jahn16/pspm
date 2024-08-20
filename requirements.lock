@@ -22,5 +22,3 @@ typer==0.12.4
     # via pspm (pyproject.toml)
 typing-extensions==4.12.2
     # via typer
-uv==0.2.37
-    # via pspm (pyproject.toml)

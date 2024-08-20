@@ -111,9 +111,5 @@ typing-extensions==4.12.2
     #   typer
 urllib3==2.2.2
     # via requests
-uv==0.2.37
-    # via
-    #   -c requirements.lock
-    #   pspm (pyproject.toml)
 watchdog==4.0.2
     # via mkdocs
