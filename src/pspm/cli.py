@@ -61,8 +61,8 @@ def init(
 
 
 @app.command()
-def install() -> None:
-    """Install all dependencies and the package itself."""
+def sync() -> None:
+    """Sync environment with all dependencies and the package itself."""
     rprint("Installing project")
     install_dependencies()
     rprint(
