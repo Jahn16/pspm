@@ -92,7 +92,12 @@ def remove(
     rprint(f"\n:sparkles: Removed package [blue]{package}[/blue]")
 
 
-@app.command()
+@app.command(
+    context_settings={
+        "ignore_unknown_options": True,
+        "allow_interspersed_args": False,
+    }
+)
 def run(
     command: str,
     arguments: Annotated[Optional[list[str]], typer.Argument()] = None,
