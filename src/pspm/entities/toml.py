@@ -3,11 +3,16 @@
 from __future__ import annotations
 
 import abc
+import sys
 from pathlib import Path
 from typing import Any
 
-import tomli
 import tomli_w
+
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
 
 
 class BaseToml(abc.ABC):
@@ -50,7 +55,7 @@ class Toml(BaseToml):
             A dictionary containing parsed TOML
         """
         with Path(self.path).open("rb") as f:
-            return tomli.load(f)
+            return tomllib.load(f)
 
     def dump(self, data: dict[str, Any]) -> None:
         """Write a dictionary to a file containing TOML-formatted data.
