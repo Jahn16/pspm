@@ -63,6 +63,7 @@ def bootstrap_project(
 
 def bootstrap_project_with_copier(
     path: Path,
+    template_src: str | None,
     name: str | None,
     description: str | None,
     *,
@@ -72,16 +73,18 @@ def bootstrap_project_with_copier(
 
     Args:
         path: Path to project
+        template_src: Template source path
         name: Project name
         description: Project description
         is_installable: Whether the project is installable
     """
     name = name or path.absolute().name
     description = description or "Describe your project here"
+    template_src = template_src or "gh:Jahn16/pspm-templates"
 
     author = get_git_user() or {}
     copier.run_copy(
-        "gh:Jahn16/pspm-templates",
+        template_src,
         path,
         data={
             "project_name": name,
@@ -89,7 +92,6 @@ def bootstrap_project_with_copier(
             "is_installable": is_installable,
             "author_name": author.get("name", ""),
             "author_email": author.get("email", ""),
-            "create_copier_answers_file": True,
         },
         defaults=True,
         quiet=True,

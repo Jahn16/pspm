@@ -165,6 +165,7 @@ def version(
 @project_app.command("init")
 def project_init(
     path: Annotated[Path, typer.Argument(file_okay=False)] = Path(),
+    src: Optional[str] = None,
     name: Optional[str] = None,
     description: Optional[str] = None,
     is_installable: Annotated[
@@ -175,6 +176,7 @@ def project_init(
 
     Args:
         path: Where to place the project
+        src: Reference to a clicker template, can be a local path or URL
         name: Project name
         description: Project description
         is_installable: Whether the project is instalabble
@@ -186,7 +188,7 @@ def project_init(
     ) as progress:
         progress.add_task("Creating project...", total=None)
         bootstrap_project_with_copier(
-            path, name, description, is_installable=is_installable
+            path, src, name, description, is_installable=is_installable
         )
     rprint(
         f"Initialized project [blue]{name or path.name}[/blue] "
