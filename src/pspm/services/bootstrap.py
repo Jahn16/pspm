@@ -105,7 +105,7 @@ def update_project(path: Path) -> None:
         path: Path to project
     """
     try:
-        copier.run_update(path)
+        copier.run_update(path, overwrite=True)
     except UserMessageError as e:
         rprint(f"[red]{e}.[/red]")
     except TypeError as e:
