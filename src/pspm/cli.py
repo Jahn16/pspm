@@ -28,7 +28,7 @@ from pspm.services.run import run_command
 
 app = typer.Typer(no_args_is_help=True, invoke_without_command=True)
 project_app = typer.Typer()
-app.add_typer(project_app, name="project")
+app.add_typer(project_app, name="project", help="Manage project templates")
 
 
 def _version_callback(value: bool) -> None:
