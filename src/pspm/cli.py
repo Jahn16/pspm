@@ -179,7 +179,7 @@ def project_init(
         is_installable: Whether the project is instalabble
     """
     with Progress(
-        SpinnerColumn(),
+        SpinnerColumn(style="blue"),
         TextColumn("[progress.description]{task.description}"),
         transient=True,
     ) as progress:
