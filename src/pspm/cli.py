@@ -14,7 +14,6 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from pspm.services.bootstrap import (
     bootstrap_project,
-    bootstrap_project_with_copier,
     update_project,
 )
 from pspm.services.dependencies import (
@@ -45,26 +44,6 @@ def callback(
     ] = None,
 ) -> None:
     """Python simple package manager."""
-
-
-@app.command(deprecated=True)
-def init(
-    path: Annotated[Path, typer.Argument(file_okay=False)] = Path(),
-    name: Optional[str] = None,
-    description: Optional[str] = None,
-    installable: Annotated[
-        bool, typer.Option("--installable/--not-installable")
-    ] = True,
-) -> None:
-    """Create initial project structure.
-
-    Args:
-        path: Where to place the project
-        name: Project name
-        description: Project description
-        installable: Whether the project is instalabble
-    """
-    bootstrap_project(path, name, description, installable=installable)
 
 
 @app.command()
@@ -162,6 +141,7 @@ def version(
     rprint(version)
 
 
+@app.command("init")
 @project_app.command("init")
 def project_init(
     path: Annotated[Path, typer.Argument(file_okay=False)] = Path(),
@@ -189,7 +169,7 @@ def project_init(
         transient=True,
     ) as progress:
         progress.add_task("Creating project...", total=None)
-        bootstrap_project_with_copier(
+        bootstrap_project(
             path, template, name, description, is_installable=is_installable
         )
     rprint(
