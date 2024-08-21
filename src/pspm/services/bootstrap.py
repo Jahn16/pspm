@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from copier.errors import UserMessageError
+
 if TYPE_CHECKING:
     from pathlib import Path
 
@@ -87,7 +89,22 @@ def bootstrap_project_with_copier(
             "is_installable": is_installable,
             "author_name": author.get("name", ""),
             "author_email": author.get("email", ""),
+            "create_copier_answers_file": True,
         },
         defaults=True,
         quiet=True,
     )
+
+
+def update_project(path: Path) -> None:
+    """Update to latest project template.
+
+    Args:
+        path: Path to project
+    """
+    try:
+        copier.run_update(path)
+    except UserMessageError as e:
+        rprint(f"[red]{e}.[/red]")
+    except TypeError as e:
+        rprint(f"[red]{e}. Perhaps missing an .copier-answer.yml file?[/red]")

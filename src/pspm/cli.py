@@ -15,6 +15,7 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 from pspm.services.bootstrap import (
     bootstrap_project,
     bootstrap_project_with_copier,
+    update_project,
 )
 from pspm.services.dependencies import (
     change_version,
@@ -191,3 +192,15 @@ def project_init(
         f"Initialized project [blue]{name or path.name}[/blue] "
         + (f"in [blue]{path.name}[/blue]" if path.name else "")
     )
+
+
+@project_app.command("update")
+def project_update(
+    path: Annotated[Path, typer.Argument(file_okay=False)] = Path(),
+) -> None:
+    """Update project template.
+
+    Args:
+        path: Path to project
+    """
+    update_project(path)
