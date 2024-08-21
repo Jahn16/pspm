@@ -8,6 +8,7 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 
+import copier
 from jinja2 import Environment, PackageLoader
 from rich import print as rprint
 
@@ -55,4 +56,38 @@ def bootstrap_project(
     rprint(
         f"Initialized project [blue]{name}[/blue] "
         + (f"in [blue]{path.name}[/blue]" if path.name else "")
+    )
+
+
+def bootstrap_project_with_copier(
+    path: Path,
+    name: str | None,
+    description: str | None,
+    *,
+    is_installable: bool,
+) -> None:
+    """Create initial project structure.
+
+    Args:
+        path: Path to project
+        name: Project name
+        description: Project description
+        is_installable: Whether the project is installable
+    """
+    name = name or path.absolute().name
+    description = description or "Describe your project here"
+
+    author = get_git_user() or {}
+    copier.run_copy(
+        "gh:Jahn16/pspm-templates",
+        path,
+        data={
+            "project_name": name,
+            "project_description": description,
+            "is_installable": is_installable,
+            "author_name": author.get("name", ""),
+            "author_email": author.get("email", ""),
+        },
+        defaults=True,
+        quiet=True,
     )
