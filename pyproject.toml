@@ -38,6 +38,7 @@ docs = [
     "mkdocs",
     "mkdocs-material",
     "markdown-gfm-admonition",
+    "mkdocs-awesome-pages-plugin",
 ]
 
 [project.urls]
