@@ -10,8 +10,12 @@ from typing import Annotated, Optional
 
 import typer
 from rich import print as rprint
+from rich.progress import Progress, SpinnerColumn, TextColumn
 
-from pspm.services.bootstrap import bootstrap_project
+from pspm.services.bootstrap import (
+    bootstrap_project,
+    bootstrap_project_with_copier,
+)
 from pspm.services.dependencies import (
     change_version,
     get_version,
@@ -22,6 +26,8 @@ from pspm.services.dependencies import (
 from pspm.services.run import run_command
 
 app = typer.Typer(no_args_is_help=True, invoke_without_command=True)
+project_app = typer.Typer()
+app.add_typer(project_app, name="project")
 
 
 def _version_callback(value: bool) -> None:
@@ -40,7 +46,7 @@ def callback(
     """Python simple package manager."""
 
 
-@app.command()
+@app.command(deprecated=True)
 def init(
     path: Annotated[Path, typer.Argument(file_okay=False)] = Path(),
     name: Optional[str] = None,
@@ -153,3 +159,35 @@ def version(
     else:
         version = get_version()
     rprint(version)
+
+
+@project_app.command("init")
+def project_init(
+    path: Annotated[Path, typer.Argument(file_okay=False)] = Path(),
+    name: Optional[str] = None,
+    description: Optional[str] = None,
+    is_installable: Annotated[
+        bool, typer.Option("--installable/--not-installable")
+    ] = True,
+) -> None:
+    """Create initial project structure.
+
+    Args:
+        path: Where to place the project
+        name: Project name
+        description: Project description
+        is_installable: Whether the project is instalabble
+    """
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        transient=True,
+    ) as progress:
+        progress.add_task("Creating project...", total=None)
+        bootstrap_project_with_copier(
+            path, name, description, is_installable=is_installable
+        )
+    rprint(
+        f"Initialized project [blue]{name or path.name}[/blue] "
+        + (f"in [blue]{path.name}[/blue]" if path.name else "")
+    )
