@@ -67,7 +67,7 @@ class VirtualEnv(BaseVirtualEnv):
         if not command_path.exists():
             error_message = (
                 f"Command {command} was not found "
-                f"in {command_path.parent.absolute()}"
+                f"in {command_path.parent.relative_to(self._path.parent)}"
             )
             raise CommandNotFoundError(command, error_message)
         return str(command_path.absolute())
