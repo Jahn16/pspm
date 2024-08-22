@@ -43,8 +43,8 @@ class PackageManager:
         groups = self._pyproject.get_extra_groups()
         return [self._group_requirements_file.format(g) for g in groups]
 
-    def install(self) -> None:
-        """Install all dependencies and the package itself."""
+    def sync(self) -> None:
+        """Sync environment with all dependencies and the package itself."""
         if not self._virtual_env.already_created():
             self._virtual_env.create()
 
@@ -74,7 +74,7 @@ class PackageManager:
         except ResolveError:
             self._pyproject.manage_dependency("remove", package, group)
             return
-        self.install()
+        self.sync()
 
     def compile_requirements(self, *, upgrade: bool = False) -> None:
         """Compile all requirements files.

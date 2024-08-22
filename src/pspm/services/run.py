@@ -3,11 +3,10 @@
 from os import environ
 from pathlib import Path
 
-from rich import print as rprint
-
 from pspm.entities.runner import Runner
 from pspm.entities.virtual_env import VirtualEnv
 from pspm.errors.command import CommandRunError
+from pspm.utils.printing import print_error
 
 
 def _get_runner() -> Runner:
@@ -39,4 +38,4 @@ def run_command(command: str, arguments: list[str]) -> None:
     try:
         runner.run(command, arguments)
     except CommandRunError as e:
-        rprint(f"[red]{e}[/red]")
+        print_error(str(e))

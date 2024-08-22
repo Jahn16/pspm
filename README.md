@@ -26,16 +26,6 @@ pipx install pspm
 spm add -g dev pytest
 ```
 
-## Roadmap
-### Comands
-- [x] Init
-- [x] Install
-- [x] Add
-- [x] Remove
-- [x] Run
-- [x] Lock
-- [x] Version
-
 ## License
 
 Licensed under the [GNU GPLv3](LICENSE) license.

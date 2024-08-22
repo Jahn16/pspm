@@ -40,10 +40,10 @@ def _get_package_manager() -> PackageManager:
     )
 
 
-def install_dependencies() -> None:
+def sync_dependencies() -> None:
     """Install all dependencies and the package itself."""
     package_manager = _get_package_manager()
-    package_manager.install()
+    package_manager.sync()
 
 
 def manage_dependency(

@@ -1,11 +1,12 @@
 [project]
 name = "pspm"
-version = "1.7.2"
+version = "1.8.0"
 dependencies = [
     "typer",
     "tomli; python_version < \"3.11\"",
     "tomli-w",
-    "jinja2",
+    "uv",
+    "copier",
 ]
 requires-python = ">=3.9"
 authors = [
@@ -37,6 +38,7 @@ docs = [
     "mkdocs",
     "mkdocs-material",
     "markdown-gfm-admonition",
+    "mkdocs-awesome-pages-plugin",
 ]
 
 [project.urls]
