@@ -11,9 +11,9 @@ if TYPE_CHECKING:
 
 
 import copier
-from rich import print as rprint
 
 from pspm.utils.commands import get_git_user
+from pspm.utils.printing import print_error
 
 
 def bootstrap_project(
@@ -62,6 +62,6 @@ def update_project(path: Path) -> None:
     try:
         copier.run_update(path, overwrite=True, defaults=True)
     except UserMessageError as e:
-        rprint(f"[red]{e}.[/red]")
+        print_error(str(e))
     except TypeError as e:
-        rprint(f"[red]{e}. Perhaps missing an .copier-answer.yml file?[/red]")
+        print_error(f"{e}. Perhaps missing an .copier-answer.yml file?")
