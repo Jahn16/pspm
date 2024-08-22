@@ -113,10 +113,6 @@ typing-extensions==4.12.2
     #   pydantic
     #   pydantic-core
     #   typer
-uv==0.2.37
-    # via
-    #   -c requirements.lock
-    #   pspm (pyproject.toml)
 wcwidth==0.2.13
     # via
     #   -c requirements.lock

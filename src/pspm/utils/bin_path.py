@@ -1,6 +1,6 @@
 """Module to find paths to binaries."""
 
-import uv
+from shutil import which
 
 
 def get_uv_path() -> str:
@@ -9,4 +9,4 @@ def get_uv_path() -> str:
     Returns:
         Path to uv binary
     """
-    return uv.find_uv_bin()
+    return which("uv") or "uv"
