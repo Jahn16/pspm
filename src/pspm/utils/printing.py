@@ -48,21 +48,17 @@ def print_file_tree(directory: Path, panel_title: str = "") -> None:
 
 def _walk_directory(directory: Path, tree: Tree) -> None:
     """Recursively build a Tree with directory contents."""
-    # Sort dirs first then by filename
     paths = sorted(
         Path(directory).iterdir(),
         key=lambda path: (path.is_file(), path.name.lower()),
     )
     for path in paths:
         if path.is_dir():
-            style = "dim" if path.name.startswith("__") else ""
             branch = tree.add(
-                f":open_file_folder: [link file://{path}]{escape(path.name)}",
-                style=style,
-                guide_style=style,
+                f":open_file_folder: {escape(path.name)}",
             )
             _walk_directory(path, branch)
         else:
             text_filename = Text(path.name)
-            text_filename.stylize(f"link file://{path}")
+            text_filename.stylize(str(path))
             tree.add(text_filename)
