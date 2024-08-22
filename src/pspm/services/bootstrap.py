@@ -18,7 +18,7 @@ from pspm.utils.printing import print_error
 
 def bootstrap_project(
     path: Path,
-    template_src: str | None,
+    template_src: str,
     name: str | None,
     description: str | None,
     *,
@@ -35,7 +35,6 @@ def bootstrap_project(
     """
     name = name or path.absolute().name
     description = description or "Describe your project here"
-    template_src = template_src or "gh:Jahn16/pspm-templates"
 
     author = get_git_user() or {}
     copier.run_copy(
