@@ -33,7 +33,7 @@ def print_file_tree(directory: Path, panel_title: str = "") -> None:
         panel_title: Panel title
     """
     tree = Tree(
-        f":open_file_folder: [link file://{directory}]{directory}",
+        f":open_file_folder: {directory}",
         guide_style="bold bright_blue",
     )
     _walk_directory(Path(directory), tree)
