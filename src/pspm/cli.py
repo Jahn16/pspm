@@ -24,6 +24,7 @@ from pspm.services.dependencies import (
     sync_dependencies,
 )
 from pspm.services.run import run_command
+from pspm.utils.printing import print_file_tree
 
 app = typer.Typer(no_args_is_help=True, invoke_without_command=True)
 project_app = typer.Typer()
@@ -172,10 +173,11 @@ def project_init(
         bootstrap_project(
             path, template, name, description, is_installable=is_installable
         )
-    rprint(
-        f"Initialized project [blue]{name or path.name}[/blue] "
-        + (f"in [blue]{path.name}[/blue]" if path.name else "")
+    panel_title = (
+        f"Initialized project [blue]{name or path.absolute().name}[/blue]"
+        + (f" in [blue]{path.name}[/blue]" if path.name else "")
     )
+    print_file_tree(path, panel_title=panel_title)
 
 
 @project_app.command("update")
