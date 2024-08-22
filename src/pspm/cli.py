@@ -59,8 +59,15 @@ def sync() -> None:
 
 @app.command()
 def add(
-    package: str,
-    group: Annotated[Optional[str], typer.Option("--group", "-g")] = None,
+    package: Annotated[str, typer.Argument(help="Package to add")],
+    group: Annotated[
+        Optional[str],
+        typer.Option(
+            "--group",
+            "-g",
+            help="Target dependency group to add into",
+        ),
+    ] = None,
 ) -> None:
     """Add package to pyproject, install it and lock version."""
     rprint(f"Adding package {package}")
@@ -70,8 +77,15 @@ def add(
 
 @app.command()
 def remove(
-    package: str,
-    group: Annotated[Optional[str], typer.Option("--group", "-g")] = None,
+    package: Annotated[str, typer.Argument(help="Package to remove")],
+    group: Annotated[
+        Optional[str],
+        typer.Option(
+            "--group",
+            "-g",
+            help="Target dependency group to remove from",
+        ),
+    ] = None,
 ) -> None:
     """Remove package from pyproject, uninstall it and lock version."""
     rprint(f"Removing package {package}")
@@ -89,17 +103,17 @@ def run(
     command: str,
     arguments: Annotated[Optional[list[str]], typer.Argument()] = None,
 ) -> None:
-    """Run a command installed in virtual env.
-
-    Args:
-        command: Command to run
-        arguments: Arguments to pass to command
-    """
+    """Run a command installed in virtual env."""
     run_command(command, arguments or [])
 
 
 @app.command()
-def lock(update: bool = False) -> None:
+def lock(
+    update: Annotated[
+        bool,
+        typer.Option(help="Whether to update dependencies to latest version"),
+    ] = False,
+) -> None:
     """Lock the dependencies without installing."""
     lock_dependencies(update=update)
     rprint(":lock: Locked dependencies")
@@ -121,18 +135,15 @@ class BumpRules(str, Enum):  # noqa: D101
 
 @app.command()
 def version(
-    new_version: Annotated[Optional[str], typer.Argument()] = None,
+    new_version: Annotated[
+        Optional[str], typer.Argument(help="Version to change to")
+    ] = None,
     bump: Annotated[
         Optional[BumpRules],
-        typer.Option("-b", "--bump"),
+        typer.Option("-b", "--bump", help="Bump rule to apply change version"),
     ] = None,
 ) -> None:
-    """Checks or update project version.
-
-    Args:
-        new_version: Version to change to
-        bump: Bump rule to apply change version
-    """
+    """Checks or update project version."""
     if new_version:
         version = change_version(new_version)
     elif bump:
@@ -145,25 +156,31 @@ def version(
 @app.command("init")
 @project_app.command("init")
 def project_init(
-    path: Annotated[Path, typer.Argument(file_okay=False)] = Path(),
+    path: Annotated[
+        Path,
+        typer.Argument(file_okay=False, help="Where to place the project"),
+    ] = Path(),
     template: Annotated[
-        Optional[str], typer.Option("--template", "-t")
+        str,
+        typer.Option(
+            "--template",
+            "-t",
+            help="Local path or Git URL to a copier template",
+        ),
+    ] = "gh:Jahn16/pspm-template",
+    name: Annotated[Optional[str], typer.Option(help="Project name")] = None,
+    description: Annotated[
+        Optional[str], typer.Option(help="Project description")
     ] = None,
-    name: Optional[str] = None,
-    description: Optional[str] = None,
     is_installable: Annotated[
-        bool, typer.Option("--installable/--not-installable")
+        bool,
+        typer.Option(
+            "--installable/--not-installable",
+            help="Whether the project is installable",
+        ),
     ] = True,
 ) -> None:
-    """Create initial project structure.
-
-    Args:
-        path: Where to place the project
-        template: Reference to a clicker template, can be a local path or URL
-        name: Project name
-        description: Project description
-        is_installable: Whether the project is instalabble
-    """
+    """Create initial project structure."""
     with Progress(
         SpinnerColumn(style="blue"),
         TextColumn("[progress.description]{task.description}"),
@@ -182,13 +199,11 @@ def project_init(
 
 @project_app.command("update")
 def project_update(
-    path: Annotated[Path, typer.Argument(file_okay=False)] = Path(),
+    path: Annotated[
+        Path, typer.Argument(file_okay=False, help="Path to project")
+    ] = Path(),
 ) -> None:
-    """Update project template.
-
-    Args:
-        path: Path to project
-    """
+    """Update project template."""
     with Progress(
         SpinnerColumn(style="blue"),
         TextColumn("[progress.description]{task.description}"),
