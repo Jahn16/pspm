@@ -10,8 +10,12 @@ from typing import Annotated, Optional
 
 import typer
 from rich import print as rprint
+from rich.progress import Progress, SpinnerColumn, TextColumn
 
-from pspm.services.bootstrap import bootstrap_project
+from pspm.services.bootstrap import (
+    bootstrap_project,
+    update_project,
+)
 from pspm.services.dependencies import (
     change_version,
     get_version,
@@ -22,6 +26,8 @@ from pspm.services.dependencies import (
 from pspm.services.run import run_command
 
 app = typer.Typer(no_args_is_help=True, invoke_without_command=True)
+project_app = typer.Typer()
+app.add_typer(project_app, name="project", help="Manage project templates")
 
 
 def _version_callback(value: bool) -> None:
@@ -38,26 +44,6 @@ def callback(
     ] = None,
 ) -> None:
     """Python simple package manager."""
-
-
-@app.command()
-def init(
-    path: Annotated[Path, typer.Argument(file_okay=False)] = Path(),
-    name: Optional[str] = None,
-    description: Optional[str] = None,
-    installable: Annotated[
-        bool, typer.Option("--installable/--not-installable")
-    ] = True,
-) -> None:
-    """Create initial project structure.
-
-    Args:
-        path: Where to place the project
-        name: Project name
-        description: Project description
-        installable: Whether the project is instalabble
-    """
-    bootstrap_project(path, name, description, installable=installable)
 
 
 @app.command()
@@ -92,7 +78,12 @@ def remove(
     rprint(f"\n:sparkles: Removed package [blue]{package}[/blue]")
 
 
-@app.command()
+@app.command(
+    context_settings={
+        "ignore_unknown_options": True,
+        "allow_interspersed_args": False,
+    }
+)
 def run(
     command: str,
     arguments: Annotated[Optional[list[str]], typer.Argument()] = None,
@@ -148,3 +139,58 @@ def version(
     else:
         version = get_version()
     rprint(version)
+
+
+@app.command("init")
+@project_app.command("init")
+def project_init(
+    path: Annotated[Path, typer.Argument(file_okay=False)] = Path(),
+    template: Annotated[
+        Optional[str], typer.Option("--template", "-t")
+    ] = None,
+    name: Optional[str] = None,
+    description: Optional[str] = None,
+    is_installable: Annotated[
+        bool, typer.Option("--installable/--not-installable")
+    ] = True,
+) -> None:
+    """Create initial project structure.
+
+    Args:
+        path: Where to place the project
+        template: Reference to a clicker template, can be a local path or URL
+        name: Project name
+        description: Project description
+        is_installable: Whether the project is instalabble
+    """
+    with Progress(
+        SpinnerColumn(style="blue"),
+        TextColumn("[progress.description]{task.description}"),
+        transient=True,
+    ) as progress:
+        progress.add_task("Creating project...", total=None)
+        bootstrap_project(
+            path, template, name, description, is_installable=is_installable
+        )
+    rprint(
+        f"Initialized project [blue]{name or path.name}[/blue] "
+        + (f"in [blue]{path.name}[/blue]" if path.name else "")
+    )
+
+
+@project_app.command("update")
+def project_update(
+    path: Annotated[Path, typer.Argument(file_okay=False)] = Path(),
+) -> None:
+    """Update project template.
+
+    Args:
+        path: Path to project
+    """
+    with Progress(
+        SpinnerColumn(style="blue"),
+        TextColumn("[progress.description]{task.description}"),
+        transient=True,
+    ) as progress:
+        progress.add_task("Updating project...", total=None)
+        update_project(path)
