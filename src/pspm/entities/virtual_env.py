@@ -36,7 +36,7 @@ class VirtualEnv(BaseVirtualEnv):
 
     def __init__(self) -> None:
         """Initialize BaseVirtualEnv."""
-        self._path = ".venv"
+        self._path = Path(".venv")
 
     def already_created(self) -> bool:
         """Check if env is already created.
@@ -44,13 +44,12 @@ class VirtualEnv(BaseVirtualEnv):
         Returns:
             Whether the env is created
         """
-        p = Path(self._path)
-        return p.exists()
+        return self._path.exists()
 
     def create(self) -> None:
         """Create virtualenv."""
         uv_path = get_uv_path()
-        subprocess.run([uv_path, "venv", self._path], check=False)
+        subprocess.run([uv_path, "venv", self._path.absolute()], check=False)
 
     def get_path_to_command_bin(self, command: str) -> str:
         """Retrieve path to command bin.
@@ -64,7 +63,7 @@ class VirtualEnv(BaseVirtualEnv):
         Returns:
             Absolute path to command bin
         """
-        command_path = Path(self._path) / "bin" / command
+        command_path = self._path / "bin" / command
         if not command_path.exists():
             error_message = (
                 f"Command {command} was not found "
