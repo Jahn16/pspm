@@ -32,6 +32,4 @@ class Runner:
         except CommandNotFoundError as e:
             raise CommandRunError(command, str(e)) from e
 
-        retcode = subprocess.call([command_path, *arguments], shell=False)
-        if retcode != 0:
-            raise CommandRunError(command)
+        subprocess.call([command_path, *arguments], shell=False)
