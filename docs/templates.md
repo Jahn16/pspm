@@ -1,7 +1,7 @@
 # Working with Templates
 
 > [!NOTE]
-> Sorry, the following bit is not that simple. In fact, `pspm` bundles with the most powerfull template management tool of all package managers.
+> Sorry, the following bit is not that simple. In fact, `pspm` bundles with the most powerful template management tool of all package managers.
 
 `PSPM` supports initializing a project from a [copier template](https://github.com/copier-org/copier). By default, the command [`project init`](commands/project/init.md) will use [this template](https://github.com/Jahn16/pspm-template), but you can pass your own in the following way:
 
