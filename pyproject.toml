@@ -5,7 +5,6 @@ dependencies = [
     "typer",
     "tomli; python_version < \"3.11\"",
     "tomli-w",
-    "uv",
     "copier",
 ]
 requires-python = ">=3.9"
@@ -28,6 +27,7 @@ classifiers = [
 file = "LICENSE"
 
 [project.scripts]
+pspm = "pspm.cli:app"
 spm = "pspm.cli:app"
 
 [project.optional-dependencies]
