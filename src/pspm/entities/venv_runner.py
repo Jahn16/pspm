@@ -1,23 +1,32 @@
 """Module to define command runner class."""
 
-import subprocess
+from __future__ import annotations
 
-from pspm.entities.virtual_env import VirtualEnv
+from typing import TYPE_CHECKING
+
 from pspm.errors.command import CommandNotFoundError, CommandRunError
+
+if TYPE_CHECKING:
+    from pspm.entities.command_runner import BaseCommandRunner
+    from pspm.entities.virtual_env import VirtualEnv
 
 
 class VenvRunner:
     """Class to run commands inside virtualenv."""
 
-    def __init__(self, virtual_env: VirtualEnv) -> None:
+    def __init__(
+        self, virtual_env: VirtualEnv, command_runner: BaseCommandRunner
+    ) -> None:
         """Initialize Runner.
 
         Args:
             virtual_env: Virtual env
+            command_runner: Command Runner
         """
         self._virtual_env = virtual_env
+        self._command_runner = command_runner
 
-    def run(self, command: str, arguments: list[str]) -> None:
+    def run(self, command: str, arguments: list[str] | None = None) -> None:
         """Run a command inside virtualenv.
 
         Args:
@@ -32,4 +41,4 @@ class VenvRunner:
         except CommandNotFoundError as e:
             raise CommandRunError(command, str(e)) from e
 
-        subprocess.call([command_path, *arguments], shell=False)
+        self._command_runner.run(command_path, arguments)
