@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import abc
-import subprocess
+from typing import TYPE_CHECKING
 
 from pspm.errors.dependencies import InstallError, SyncError
 from pspm.utils.bin_path import get_uv_path
+
+if TYPE_CHECKING:
+    from pspm.entities.command_runner import BaseCommandRunner
 
 
 class BaseInstaller(abc.ABC):
@@ -47,9 +50,10 @@ class BaseInstaller(abc.ABC):
 class UVInstaller(BaseInstaller):
     """Install packages with UV."""
 
-    def __init__(self) -> None:
+    def __init__(self, command_runner: BaseCommandRunner) -> None:
         """Initialize UV Installer."""
         self._uv_path = get_uv_path()
+        self._command_runner = command_runner
 
     def install(self, package: str, *, editable: bool = False) -> None:
         """Install a package.
@@ -61,13 +65,13 @@ class UVInstaller(BaseInstaller):
         Raises:
             InstallError: If can't install package.
         """
-        retcode = subprocess.call([
-            self._uv_path,
+        args = [
             "pip",
             "install",
             *(["--editable"] if editable else []),
             package,
-        ])
+        ]
+        retcode = self._command_runner.run(self._uv_path, args)
         if retcode != 0:
             raise InstallError(package)
 
@@ -91,11 +95,11 @@ class UVInstaller(BaseInstaller):
         Raises:
             SyncError: If cant sync dependencies
         """
-        retcode = subprocess.call([
-            self._uv_path,
+        args = [
             "pip",
             "sync",
             *requirements_files,
-        ])
+        ]
+        retcode = self._command_runner.run(self._uv_path, args)
         if retcode != 0:
             raise SyncError

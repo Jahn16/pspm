@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import abc
-import subprocess
+from typing import TYPE_CHECKING
 
 from pspm.errors.dependencies import ResolveError
 from pspm.utils.bin_path import get_uv_path
+
+if TYPE_CHECKING:
+    from pspm.entities.command_runner import BaseCommandRunner
 
 
 class BaseResolver(abc.ABC):
@@ -43,10 +46,13 @@ class BaseResolver(abc.ABC):
 class UVResolver(BaseResolver):
     """Class for resolving dependencies with UV."""
 
-    def __init__(self, pyproject_path: str) -> None:
+    def __init__(
+        self, pyproject_path: str, command_runner: BaseCommandRunner
+    ) -> None:
         """Initialize UV Compiler."""
         self.pyproject_path = pyproject_path
         self._uv_path = get_uv_path()
+        self._command_runner = command_runner
 
     def compile(
         self,
@@ -67,8 +73,7 @@ class UVResolver(BaseResolver):
         Raises:
             ResolveError: If cant resolve dependencies
         """
-        retcode = subprocess.call([
-            self._uv_path,
+        args = [
             "pip",
             "compile",
             "-q",
@@ -78,6 +83,7 @@ class UVResolver(BaseResolver):
             "-o",
             output_file,
             self.pyproject_path,
-        ])
+        ]
+        retcode = self._command_runner.run(self._uv_path, args)
         if retcode != 0:
             raise ResolveError

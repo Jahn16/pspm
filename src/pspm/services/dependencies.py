@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Literal
 
+from pspm.entities.command_runner import BaseCommandRunner, CommandRunner
 from pspm.entities.installer import BaseInstaller, UVInstaller
 from pspm.entities.package_manager import PackageManager
 from pspm.entities.pyproject import Pyproject
@@ -24,13 +25,17 @@ def _get_pyproject() -> Pyproject:
     return Pyproject(parser)
 
 
+def _get_command_runner() -> BaseCommandRunner:
+    return CommandRunner()
+
+
 def _get_resolver() -> BaseResolver:
     path = _get_pyproject_path()
-    return UVResolver(path)
+    return UVResolver(path, _get_command_runner())
 
 
 def _get_installer() -> BaseInstaller:
-    return UVInstaller()
+    return UVInstaller(_get_command_runner())
 
 
 def _get_package_manager() -> PackageManager:
