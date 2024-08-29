@@ -6,8 +6,8 @@ from pspm.entities.virtual_env import VirtualEnv
 from pspm.errors.command import CommandNotFoundError, CommandRunError
 
 
-class Runner:
-    """Class to run commands."""
+class VenvRunner:
+    """Class to run commands inside virtualenv."""
 
     def __init__(self, virtual_env: VirtualEnv) -> None:
         """Initialize Runner.
@@ -18,7 +18,7 @@ class Runner:
         self._virtual_env = virtual_env
 
     def run(self, command: str, arguments: list[str]) -> None:
-        """Run a command.
+        """Run a command inside virtualenv.
 
         Args:
             command: Command to execute

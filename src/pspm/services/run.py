@@ -3,15 +3,15 @@
 from os import environ
 from pathlib import Path
 
-from pspm.entities.runner import Runner
+from pspm.entities.venv_runner import VenvRunner
 from pspm.entities.virtual_env import VirtualEnv
 from pspm.errors.command import CommandRunError
 from pspm.utils.printing import print_error
 
 
-def _get_runner() -> Runner:
+def _get_runner() -> VenvRunner:
     virtual_env = VirtualEnv()
-    return Runner(virtual_env)
+    return VenvRunner(virtual_env)
 
 
 def load_dotenv() -> None:
