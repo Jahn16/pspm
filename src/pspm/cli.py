@@ -39,7 +39,7 @@ def _version_callback(value: bool) -> None:
 
 @app.callback()
 def callback(
-    version: Annotated[  # noqa: ARG001
+    version: Annotated[
         Optional[bool],
         typer.Option("--version", callback=_version_callback, is_eager=True),
     ] = None,
