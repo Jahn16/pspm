@@ -21,10 +21,20 @@ pipx install pspm
 ```
 
 ## Quickstart
-### Install packages
+
+### Initialize project
+
 ```bash
-spm add -g dev pytest
+spm init
 ```
+
+### Install packages
+
+```bash
+spm add fastapi
+```
+
+For more details read the [docs](https://jahn16.github.io/pspm/)
 
 ## License
 
