@@ -49,6 +49,7 @@ def bootstrap_project(
         },
         defaults=True,
         quiet=True,
+        overwrite=False,
     )
 
 
