@@ -5,6 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Literal
 
+from rich import print as rprint
+
 from pspm.entities.command_runner import BaseCommandRunner, CommandRunner
 from pspm.entities.installer import BaseInstaller, UVInstaller
 from pspm.entities.package_manager import PackageManager
@@ -12,6 +14,8 @@ from pspm.entities.pyproject import Pyproject
 from pspm.entities.resolver import BaseResolver, UVResolver
 from pspm.entities.toml import Toml
 from pspm.entities.virtual_env import VirtualEnv
+from pspm.errors.dependencies import AddError
+from pspm.utils.printing import print_error
 
 
 def _get_pyproject_path() -> str:
@@ -62,7 +66,12 @@ def manage_dependency(
         group: Group to insert package
     """
     package_manager = _get_package_manager()
-    package_manager.manage_dependency(action, package, group)
+    try:
+        package_manager.manage_dependency(action, package, group)
+    except AddError as e:
+        print_error(str(e))
+        return
+    rprint(f"\n:sparkles: Added package [blue]{package}[/blue]")
 
 
 def lock_dependencies(*, update: bool = False) -> None:
