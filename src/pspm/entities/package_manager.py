@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Literal
 
+from rich.progress import Progress, SpinnerColumn, TextColumn
+
 from pspm.errors.dependencies import AddError, ResolveError
 
 if TYPE_CHECKING:
@@ -88,11 +90,21 @@ class PackageManager:
             upgrade: Whether to upgrade package versions
         """
         groups = self._pyproject.get_extra_groups()
-        self._resolver.compile(self._main_requirements_file, upgrade=upgrade)
-        for file, group in zip(self._get_group_requirements_files(), groups):
+        with Progress(
+            SpinnerColumn(style="blue"),
+            TextColumn("[progress.description]{task.description}"),
+            transient=True,
+        ) as progress:
+            progress.add_task("Resolving dependencies...")
             self._resolver.compile(
-                file,
-                group,
-                constraint_file=self._main_requirements_file,
-                upgrade=upgrade,
+                self._main_requirements_file, upgrade=upgrade
             )
+            for file, group in zip(
+                self._get_group_requirements_files(), groups
+            ):
+                self._resolver.compile(
+                    file,
+                    group,
+                    constraint_file=self._main_requirements_file,
+                    upgrade=upgrade,
+                )
