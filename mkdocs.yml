@@ -7,6 +7,7 @@ theme:
     repo: fontawesome/brands/github
 markdown_extensions:
   - markdown_gfm_admonition
+  - footnotes
 plugins:
     - search
     - awesome-pages
