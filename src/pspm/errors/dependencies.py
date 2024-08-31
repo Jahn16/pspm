@@ -19,6 +19,10 @@ class InstallError(DependencyError):
         super().__init__(self.message)
 
 
+class AddError(InstallError):
+    """Can't add package to project."""
+
+
 class SyncError(DependencyError):
     """Can't sync dependencies."""
 
