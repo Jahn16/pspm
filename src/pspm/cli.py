@@ -50,11 +50,9 @@ def callback(
 @app.command()
 def sync() -> None:
     """Sync environment with all dependencies and the package itself."""
-    rprint("Installing project")
+    rprint(":hourglass: Installing [blue]project[/blue] and dependencies")
     sync_dependencies()
-    rprint(
-        "\n:sparkles: Installed [blue]current package[/blue] and dependencies"
-    )
+    rprint("\n:sparkles: Installed [blue]project[/blue] and dependencies")
 
 
 @app.command()
