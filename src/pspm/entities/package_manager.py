@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Literal
 
-from pspm.errors.dependencies import ResolveError
+from pspm.errors.dependencies import AddError, ResolveError
 
 if TYPE_CHECKING:
     from pspm.entities.installer import BaseInstaller
@@ -67,12 +67,17 @@ class PackageManager:
             action: Action to take can be either add or remove
             package: Package to install
             group: Group to insert package
+
+        Raises:
+            AddError: If can't add dependency
         """
         self._pyproject.manage_dependency(action, package, group)
         try:
             self.compile_requirements()
-        except ResolveError:
-            self._pyproject.manage_dependency("remove", package, group)
+        except ResolveError as e:
+            if action == "add":
+                self._pyproject.manage_dependency("remove", package, group)
+                raise AddError(package) from e
             return
         self.sync()
 
