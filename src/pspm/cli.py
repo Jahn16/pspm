@@ -70,7 +70,7 @@ def add(
     ] = None,
 ) -> None:
     """Add package to pyproject, install it and lock version."""
-    rprint(f"Adding package {package}")
+    rprint(f":hourglass: Adding package [blue]{package}")
     manage_dependency("add", package, group)
 
 
@@ -87,7 +87,7 @@ def remove(
     ] = None,
 ) -> None:
     """Remove package from pyproject, uninstall it and lock version."""
-    rprint(f"Removing package {package}")
+    rprint(f":hourglass: Removing package [blue]{package}")
     manage_dependency("remove", package, group or None)
     rprint(f"\n:sparkles: Removed package [blue]{package}[/blue]")
 
