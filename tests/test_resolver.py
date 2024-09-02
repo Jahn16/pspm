@@ -27,7 +27,7 @@ def pyproject_path() -> str:
 def resolver(
     command_runner: BaseCommandRunner, pyproject_path: str
 ) -> UVResolver:
-    return UVResolver(pyproject_path, command_runner)
+    return UVResolver(command_runner)
 
 
 @pytest.fixture
