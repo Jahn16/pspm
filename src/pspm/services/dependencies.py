@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Literal
 
 from rich import print as rprint
+from typer import Exit
 
 from pspm.entities.command_runner import BaseCommandRunner, CommandRunner
 from pspm.entities.installer import BaseInstaller, UVInstaller
@@ -20,6 +21,9 @@ from pspm.utils.printing import print_error
 
 def _get_pyproject_path() -> str:
     path = Path(Path.cwd()) / "pyproject.toml"
+    if not path.exists():
+        print_error("Did not found pyproject.toml")
+        raise Exit(code=1)
     return str(path)
 
 
