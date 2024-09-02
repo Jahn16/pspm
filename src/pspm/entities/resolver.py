@@ -13,15 +13,7 @@ if TYPE_CHECKING:
 
 
 class BaseResolver(abc.ABC):
-    """Base class for resolving dependencies.
-
-    Attributes:
-        pyproject_path: Path to pyproject.
-    """
-
-    def __init__(self, pyproject_path: str) -> None:
-        """Initialize BaseResolver."""
-        self.pyproject_path = pyproject_path
+    """Base class for resolving dependencies."""
 
     @abc.abstractmethod
     def compile(
@@ -46,11 +38,8 @@ class BaseResolver(abc.ABC):
 class UVResolver(BaseResolver):
     """Class for resolving dependencies with UV."""
 
-    def __init__(
-        self, pyproject_path: str, command_runner: BaseCommandRunner
-    ) -> None:
+    def __init__(self, command_runner: BaseCommandRunner) -> None:
         """Initialize UV Compiler."""
-        self.pyproject_path = pyproject_path
         self._uv_path = get_uv_path()
         self._command_runner = command_runner
 
@@ -82,7 +71,7 @@ class UVResolver(BaseResolver):
             *(["--upgrade"] if upgrade else []),
             "-o",
             output_file,
-            self.pyproject_path,
+            "pyproject.toml",
         ]
         retcode = self._command_runner.run(self._uv_path, args)
         if retcode != 0:

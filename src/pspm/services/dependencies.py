@@ -34,8 +34,7 @@ def _get_command_runner() -> BaseCommandRunner:
 
 
 def _get_resolver() -> BaseResolver:
-    path = _get_pyproject_path()
-    return UVResolver(path, _get_command_runner())
+    return UVResolver(_get_command_runner())
 
 
 def _get_installer() -> BaseInstaller:
