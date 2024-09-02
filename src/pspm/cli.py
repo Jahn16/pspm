@@ -112,6 +112,9 @@ def lock(
     """Lock the dependencies without installing."""
     lock_dependencies(update=update)
     rprint(":lock: Locked dependencies")
+    rprint(
+        "   :arrow_right_hook: Run `[blue]spm sync[/blue]` to install them",
+    )
 
 
 @app.command()
