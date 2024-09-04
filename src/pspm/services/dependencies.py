@@ -5,7 +5,6 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Literal
 
-from rich import print as rprint
 from typer import Exit
 
 from pspm.entities.command_runner import BaseCommandRunner, CommandRunner
@@ -67,14 +66,16 @@ def manage_dependency(
         action: Action to take can be either add or remove
         package: Package to install
         group: Group to insert package
+
+    Raises:
+        Exit: If cant add dependency
     """
     package_manager = _get_package_manager()
     try:
         package_manager.manage_dependency(action, package, group)
     except AddError as e:
         print_error(str(e))
-        return
-    rprint(f"\n:sparkles: Added package [blue]{package}[/blue]")
+        raise Exit(1) from e
 
 
 def lock_dependencies(*, update: bool = False) -> None:
