@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import abc
+import re
 from typing import TYPE_CHECKING, Any, Literal, cast
 
 if TYPE_CHECKING:
@@ -111,24 +112,27 @@ class Pyproject(BasePyproject):
         optional_dependencies: dict[str, list[str]] = project.get(
             "optional-dependencies", {}
         )
-        packages: list[str] = (
+        dependencies: list[str] = (
             project.get("dependencies", [])
             if not group
             else optional_dependencies.get(group, [])
         )
-        if (action == "add" and package in packages) or (
-            action == "remove" and package not in packages
-        ):
-            return
-        (
-            packages.append(package)
-            if action == "add"
-            else packages.remove(package)
-        )
-        if not group:
-            project["dependencies"] = packages
+
+        index = _find_dependency_index(package, dependencies)
+        is_package_installed = index != -1
+        if action == "add":
+            if is_package_installed:
+                return
+            dependencies.append(package)
         else:
-            optional_dependencies[group] = packages
+            if not is_package_installed:
+                return
+            del dependencies[index]
+
+        if not group:
+            project["dependencies"] = dependencies
+        else:
+            optional_dependencies[group] = dependencies
             project["optional-dependencies"] = optional_dependencies
         data["project"] = project
         self._parser.dump(data)
@@ -196,3 +200,13 @@ class Pyproject(BasePyproject):
             parts[i] = 0
         new_version = ".".join([str(p) for p in parts])
         return self.change_version(new_version)
+
+
+def _find_dependency_index(package: str, dependencies: list[str]) -> int:
+    constraint_pattern = r"[\s;=<>]"
+    package_name = re.split(constraint_pattern, package)[0]
+    pattern = f"^{package_name}({constraint_pattern}|$)"
+    for index, dependency in enumerate(dependencies):
+        if re.match(pattern, dependency):
+            return index
+    return -1
