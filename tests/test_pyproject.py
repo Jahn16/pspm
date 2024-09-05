@@ -71,6 +71,17 @@ def test_remove_dependency(
     assert result["project"]["dependencies"] == ["bar"]
 
 
+@pytest.mark.parametrize("constraint", [";", "==", "<", ">"])
+def test_remove_dependency_with_constraint(
+    pyproject: Pyproject, toml_parser: BaseToml, constraint: str
+) -> None:
+    package = f"foo{constraint}1.0.0"
+
+    pyproject.manage_dependency("remove", package)
+    result = toml_parser.load()
+    assert result["project"]["dependencies"] == ["bar"]
+
+
 def test_add_dependency_with_group(
     pyproject: Pyproject,
     toml_parser: BaseToml,
