@@ -4,8 +4,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from copier.errors import UserMessageError
-
 if TYPE_CHECKING:
     from pathlib import Path
 
@@ -13,7 +11,6 @@ if TYPE_CHECKING:
 import copier
 
 from pspm.utils.commands import get_git_user
-from pspm.utils.printing import print_error
 
 
 def bootstrap_project(
@@ -51,17 +48,3 @@ def bootstrap_project(
         quiet=True,
         overwrite=False,
     )
-
-
-def update_project(path: Path) -> None:
-    """Update to latest project template.
-
-    Args:
-        path: Path to project
-    """
-    try:
-        copier.run_update(path, overwrite=True, defaults=True)
-    except UserMessageError as e:
-        print_error(str(e))
-    except TypeError as e:
-        print_error(f"{e}. Perhaps missing an .copier-answer.yml file?")

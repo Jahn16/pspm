@@ -14,7 +14,6 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from pspm.services.bootstrap import (
     bootstrap_project,
-    update_project,
 )
 from pspm.services.dependencies import (
     change_version,
@@ -27,8 +26,6 @@ from pspm.services.run import run_command
 from pspm.utils.printing import print_file_tree
 
 app = typer.Typer(no_args_is_help=True, invoke_without_command=True)
-project_app = typer.Typer()
-app.add_typer(project_app, name="project", help="Manage project templates")
 
 
 def _version_callback(value: bool) -> None:
@@ -152,9 +149,8 @@ def version(
     rprint(version)
 
 
-@app.command("init")
-@project_app.command("init")
-def project_init(
+@app.command()
+def init(
     path: Annotated[
         Path,
         typer.Argument(file_okay=False, help="Where to place the project"),
@@ -194,19 +190,3 @@ def project_init(
         + (f" in [blue]{path.name}[/blue]" if path.name else "")
     )
     print_file_tree(path, panel_title=panel_title)
-
-
-@project_app.command("update")
-def project_update(
-    path: Annotated[
-        Path, typer.Argument(file_okay=False, help="Path to project")
-    ] = Path(),
-) -> None:
-    """Update project template."""
-    with Progress(
-        SpinnerColumn(style="blue"),
-        TextColumn("[progress.description]{task.description}"),
-        transient=True,
-    ) as progress:
-        progress.add_task("Updating project...", total=None)
-        update_project(path)
