@@ -6,7 +6,7 @@
 `PSPM` supports initializing a project from a [copier template](https://github.com/copier-org/copier). By default, the command [`init`](commands/ginit.md) will use [this template](https://github.com/Jahn16/pspm-template), but you can pass your own in the following way:
 
 ```
-spm init -t gh:Jahn16/pspm-template
+spm init -T gh:Jahn16/pspm-template
 ```
 
 The template option can be a local path, a Git URL, or a shortcut URL (as shown in the example)

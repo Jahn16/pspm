@@ -10,8 +10,8 @@ Create initial project structure. Files created: `pyproject.toml`, `README.md`, 
 
 - `--name <NAME>`: Project name (defaults to current path basename)
 - `--description <DESCRIPTION>`: Project description
-- `--not-installable`: If passed pyproject will be created with no `[build-system]` section and the project will not be installed with [`sync`](sync.md)
-- `-t`,`--template`: Path to a [copier](https://github.com/copier-org/copier) template, can be a local path or an URL (defaults to [gh:Jahn16/pspm-template](https://github.com/Jahn16/pspm-template))
+- `-t`, `--type`: Project type, can be either lib, app or script (defaults to lib)
+- `-T`,`--template`: Path to a [copier](https://github.com/copier-org/copier) template, can be a local path or an URL (defaults to [gh:Jahn16/pspm-template](https://github.com/Jahn16/pspm-template))
 
 ## Examples
 
