@@ -1,7 +1,7 @@
 # Quick Start
 ## Project Setup
 
-To create a new project use the [`init`](commands/project/init.md) command
+To create a new project use the [`init`](commands/init.md) command
 
 ```bash
 spm init my-project
