@@ -122,8 +122,9 @@ class Pyproject(BasePyproject):
         is_package_installed = index != -1
         if action == "add":
             if is_package_installed:
-                return
-            dependencies.append(package)
+                dependencies[index] = package
+            else:
+                dependencies.append(package)
         else:
             if not is_package_installed:
                 return
