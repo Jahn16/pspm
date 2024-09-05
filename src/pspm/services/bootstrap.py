@@ -18,8 +18,7 @@ def bootstrap_project(
     template_src: str,
     name: str | None,
     description: str | None,
-    *,
-    is_installable: bool,
+    project_type: str,
 ) -> None:
     """Create initial project structure.
 
@@ -28,7 +27,7 @@ def bootstrap_project(
         template_src: Template source path
         name: Project name
         description: Project description
-        is_installable: Whether the project is installable
+        project_type: Project type
     """
     name = name or path.absolute().name
     description = description or "Describe your project here"
@@ -40,7 +39,7 @@ def bootstrap_project(
         data={
             "project_name": name,
             "project_description": description,
-            "is_installable": is_installable,
+            "project_type": project_type,
             "author_name": author.get("name", ""),
             "author_email": author.get("email", ""),
         },

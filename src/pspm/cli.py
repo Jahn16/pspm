@@ -149,6 +149,12 @@ def version(
     rprint(version)
 
 
+class ProjectTypes(str, Enum):  # noqa: D101
+    lib = "lib"
+    app = "app"
+    script = "script"
+
+
 @app.command()
 def init(
     path: Annotated[
@@ -159,7 +165,7 @@ def init(
         str,
         typer.Option(
             "--template",
-            "-t",
+            "-T",
             help="Local path or Git URL to a copier template",
         ),
     ] = "gh:Jahn16/pspm-template",
@@ -167,13 +173,9 @@ def init(
     description: Annotated[
         Optional[str], typer.Option(help="Project description")
     ] = None,
-    is_installable: Annotated[
-        bool,
-        typer.Option(
-            "--installable/--not-installable",
-            help="Whether the project is installable",
-        ),
-    ] = True,
+    project_type: Annotated[
+        ProjectTypes, typer.Option("--type", "-t", help="Project type")
+    ] = ProjectTypes.lib,
 ) -> None:
     """Create initial project structure."""
     with Progress(
@@ -182,9 +184,7 @@ def init(
         transient=True,
     ) as progress:
         progress.add_task("Creating project...", total=None)
-        bootstrap_project(
-            path, template, name, description, is_installable=is_installable
-        )
+        bootstrap_project(path, template, name, description, project_type)
     panel_title = (
         f"Initialized project [blue]{name or path.absolute().name}[/blue]"
         + (f" in [blue]{path.name}[/blue]" if path.name else "")
