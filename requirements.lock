@@ -34,9 +34,9 @@ plumbum==1.8.3
     # via copier
 prompt-toolkit==3.0.36
     # via questionary
-pydantic==2.8.2
+pydantic==2.9.2
     # via copier
-pydantic-core==2.20.1
+pydantic-core==2.23.4
     # via pydantic
 pygments==2.18.0
     # via
@@ -48,7 +48,7 @@ pyyaml==6.0.2
     #   jinja2-ansible-filters
 questionary==2.0.1
     # via copier
-rich==13.8.0
+rich==13.8.1
     # via typer
 shellingham==1.5.4
     # via typer

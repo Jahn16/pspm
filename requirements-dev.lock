@@ -67,11 +67,11 @@ prompt-toolkit==3.0.36
     # via
     #   -c requirements.lock
     #   questionary
-pydantic==2.8.2
+pydantic==2.9.2
     # via
     #   -c requirements.lock
     #   copier
-pydantic-core==2.20.1
+pydantic-core==2.23.4
     # via
     #   -c requirements.lock
     #   pydantic
@@ -80,7 +80,7 @@ pygments==2.18.0
     #   -c requirements.lock
     #   copier
     #   rich
-pytest==8.3.2
+pytest==8.3.3
     # via pspm (pyproject.toml)
 pyyaml==6.0.2
     # via
@@ -91,7 +91,7 @@ questionary==2.0.1
     # via
     #   -c requirements.lock
     #   copier
-rich==13.8.0
+rich==13.8.1
     # via
     #   -c requirements.lock
     #   typer

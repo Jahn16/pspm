@@ -36,7 +36,7 @@ funcy==2.0
     #   copier
 ghp-import==2.1.0
     # via mkdocs
-idna==3.8
+idna==3.10
     # via requests
 jinja2==3.1.4
     # via
@@ -83,7 +83,7 @@ mkdocs-awesome-pages-plugin==2.9.3
     # via pspm (pyproject.toml)
 mkdocs-get-deps==0.2.0
     # via mkdocs
-mkdocs-material==9.5.34
+mkdocs-material==9.5.37
     # via pspm (pyproject.toml)
 mkdocs-material-extensions==1.3.1
     # via mkdocs-material
@@ -102,7 +102,7 @@ pathspec==0.12.1
     #   -c requirements.lock
     #   copier
     #   mkdocs
-platformdirs==4.2.2
+platformdirs==4.3.6
     # via mkdocs-get-deps
 plumbum==1.8.3
     # via
@@ -112,11 +112,11 @@ prompt-toolkit==3.0.36
     # via
     #   -c requirements.lock
     #   questionary
-pydantic==2.8.2
+pydantic==2.9.2
     # via
     #   -c requirements.lock
     #   copier
-pydantic-core==2.20.1
+pydantic-core==2.23.4
     # via
     #   -c requirements.lock
     #   pydantic
@@ -126,7 +126,7 @@ pygments==2.18.0
     #   copier
     #   mkdocs-material
     #   rich
-pymdown-extensions==10.9
+pymdown-extensions==10.10.1
     # via mkdocs-material
 python-dateutil==2.9.0.post0
     # via ghp-import
@@ -145,11 +145,11 @@ questionary==2.0.1
     # via
     #   -c requirements.lock
     #   copier
-regex==2024.7.24
+regex==2024.9.11
     # via mkdocs-material
 requests==2.32.3
     # via mkdocs-material
-rich==13.8.0
+rich==13.8.1
     # via
     #   -c requirements.lock
     #   typer
@@ -173,13 +173,13 @@ typing-extensions==4.12.2
     #   pydantic
     #   pydantic-core
     #   typer
-urllib3==2.2.2
+urllib3==2.2.3
     # via requests
 uv==0.4.16
     # via
     #   -c requirements.lock
     #   pspm (pyproject.toml)
-watchdog==5.0.1
+watchdog==5.0.2
     # via mkdocs
 wcmatch==9.0
     # via mkdocs-awesome-pages-plugin
