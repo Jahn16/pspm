@@ -5,7 +5,7 @@ dependencies = [
     "typer",
     "tomli; python_version < \"3.11\"",
     "tomli-w",
-    "uv",
+    "uv>=0.4.8",
     "copier",
 ]
 requires-python = ">=3.9"

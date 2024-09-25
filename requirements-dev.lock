@@ -113,7 +113,7 @@ typing-extensions==4.12.2
     #   pydantic
     #   pydantic-core
     #   typer
-uv==0.4.3
+uv==0.4.16
     # via
     #   -c requirements.lock
     #   pspm (pyproject.toml)
