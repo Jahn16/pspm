@@ -17,8 +17,12 @@ pspm is Python's Simplest Package Manager.
 I recommend using [pipx](https://pipx.pypa.io/stable/) to install pspm.
 
 ```bash
-pipx install pspm
+pipx install pspm[uv]
 ```
+
+> [!NOTE]
+> This will install `pspm` along with `uv`. You may want to [install uv separately](https://docs.astral.sh/uv/getting-started/installation/) and run `pipx install pspm` instead.
+
 
 ## Quickstart
 
