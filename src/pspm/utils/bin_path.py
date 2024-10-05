@@ -2,7 +2,9 @@
 
 import shutil
 
-import uv
+from typer import Exit
+
+from pspm.utils.printing import print_error
 
 
 def get_uv_path() -> str:
@@ -10,5 +12,15 @@ def get_uv_path() -> str:
 
     Returns:
         Path to uv binary
+
+    Raises:
+        Exit: If UV path was not found
     """
-    return shutil.which("uv") or uv.find_uv_bin()
+    path = shutil.which("uv")
+    if not path:
+        print_error(
+            r"UV command not found, can be installed by running "
+            r"`[bold]pip install pspm\[uv][/]`"
+        )
+        raise Exit
+    return path
