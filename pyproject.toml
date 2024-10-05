@@ -33,7 +33,8 @@ spm = "pspm.cli:app"
 uv = [
     "uv>=0.4.8",
 ]
-dev = [
+test = [
+    "uv>=0.4.8",
     "pytest",
 ]
 docs = [
